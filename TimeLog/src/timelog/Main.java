@@ -15,9 +15,6 @@ public class Main {
 		int NPE = 2;
 		
 		while(!deconnecter) {
-			
-			
-			
 			System.out.println("Bienvenue "+user);
 			System.out.println("Menu Employé");
 			System.out.println("1. Début d'activité");

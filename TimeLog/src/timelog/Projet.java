@@ -38,12 +38,37 @@ public class Projet {
 		this.liste_Disciplines.add(new Discipline("Déploiement", heuresDeploiement));
 	}
 	
-	public void addPersonne(Personne p) {
+	public void ajouter_Personne(Personne p) {
 		this.liste_Personnes.add(p);
 	}
 	
-	public void removePersonne(Personne p) {
+	public void supprimer_Personne(Personne p) {
 		this.liste_Personnes.remove(p);
+	}
+	
+	public void ajouter_Discipline(String nom, double heures) {
+		this.liste_Disciplines.add(new Discipline(nom, heures));
+	}
+	
+	public void supprimer_Discipline(String nom) {
+		for (Discipline d : liste_Disciplines) {
+			if(d.getNom_Discipline().equals(nom))
+				this.liste_Disciplines.remove(d);
+		}
+	}
+	
+	public void modifier_Nom_Discipline(String nom_Discipline, String nouveau_Nom) {
+		for (Discipline d : liste_Disciplines) {
+			if(d.getNom_Discipline().equals(nom_Discipline))
+				d.setNom_Discipline(nouveau_Nom);
+		}
+	}
+	
+	public void modifier_Heures_Discipline(String nom_Discipline, double heures) {
+		for (Discipline d : liste_Disciplines) {
+			if(d.getNom_Discipline().equals(nom_Discipline))
+				d.setNbre_Heures_budgetes(heures);
+		}
 	}
 
 	public String getNom_Projet() {
