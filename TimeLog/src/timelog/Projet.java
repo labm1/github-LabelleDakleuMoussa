@@ -12,20 +12,14 @@ public class Projet {
 	private ArrayList<Personne> liste_Personnes;
 	private ArrayList<Discipline> liste_Disciplines;
 	
-	public Projet(String nom,int id,double nbHeuresBudgetes,double heuresDesign1, double heuresDesign2, 
+	public Projet(String nom,int id,double heuresDesign1, double heuresDesign2, 
 			double heuresImplementation, double heuresTest, double heuresDeploiement, Date debut, Date fin) {
 		
-		try {
-		
-			if(nbHeuresBudgetes != heuresDesign1+heuresDesign2+heuresImplementation+heuresTest+heuresDeploiement)
-				throw new ArithmeticException("Les heures budgétées du projet et celle des disciplines ne correspondent pas");
-		} catch(ArithmeticException e) {
-			System.out.println(e.getMessage());
-		}
+		this.nbre_Heures_Budgetes = heuresDesign1+heuresDesign2+heuresImplementation+heuresTest+heuresDeploiement;
+	
 		
 		this.nom_Projet = nom;
 		this.id = id;
-		this.nbre_Heures_Budgetes = nbHeuresBudgetes;
 		this.date_Debut = debut;
 		this.date_Fin = fin;
 		
