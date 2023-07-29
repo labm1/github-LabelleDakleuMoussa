@@ -90,7 +90,9 @@ package timelog;
 		this.numero_nas = numero_nas;
 	}
 
-
+	public boolean seConnecter(int id) {
+		
+	}
 
 
 

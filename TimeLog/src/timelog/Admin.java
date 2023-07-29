@@ -1,5 +1,5 @@
 package timelog;
 
-public class Admin {
+public class Admin extends Personne{
 
 }

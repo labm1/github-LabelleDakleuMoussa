@@ -5,13 +5,30 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-		boolean deconnecter = false;
+		boolean deconnecter = true;
+		Compagnie c = new Compagnie();
+		c.addPersonne(new Employe("Employé1",1));
+		int essais = 0,id;
+		String user;
+		Personne p;
 		
+		do {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Connexion\nUser:");
-		String user = scan.next();
+		user = scan.next();
 		System.out.println("ID:");
-		int id = scan.nextInt();
+		id = scan.nextInt();
+		
+		p = c.trouverPersonne(user);
+		if(!p.seConnecter(id)) {
+			System.out.println("Mauvais nom d'utilisateur ou mot de passe; veuillez réessayer");
+			essais++;
+			if (essais == )
+		}
+		else {
+			deconnecter = false;
+		}
+		while(deconnecter && essais<3);
 		int NPE = 2;
 		
 		while(!deconnecter) {
