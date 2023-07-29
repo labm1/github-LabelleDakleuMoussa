@@ -150,6 +150,10 @@ public class Main {
 				
 				calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7)), Integer.parseInt(dateFin.substring(8)));
 				Date fin = calendrier.getTime();
+				
+				Projet projet = new Projet(nom, id, design1, design2, implementation, test, deploiement, debut, fin);
+				c.ajouterProjet(projet);
+				System.out.println("Projet créé!");
 			}
 			if(choix2 == 2) {
 				System.out.println("choisir projet");
