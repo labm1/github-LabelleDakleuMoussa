@@ -91,9 +91,6 @@ package timelog;
 	}
 
 <<<<<<< HEAD
-	public boolean seConnecter(int id) {
-		
-	}
 =======
 	public boolean seconnecter(int id) {
 		
