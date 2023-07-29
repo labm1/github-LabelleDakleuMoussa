@@ -8,11 +8,11 @@ public class StockageRegistre {
 	}
 	
 	public void supprimer_Projet(Projet p) {
-		this.compagnie.liste_Projet.remove(p);
+		this.compagnie.supprimerProjet(p);
 	}
 	
 	public void ajouter_Projet(Projet p) {
-		this.compagnie.liste_Projet.add(p);
+		this.compagnie.ajouterProjet(p);
 	}
 
 	//modifier projet

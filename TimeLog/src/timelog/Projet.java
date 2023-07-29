@@ -40,6 +40,30 @@ public class Projet {
 		this.liste_Employes.remove(p);
 	}
 	
+	public double getNbre_Heures_Budgetes() {
+		return nbre_Heures_Budgetes;
+	}
+
+	public void setNbre_Heures_Budgetes(double nbre_Heures_Budgetes) {
+		this.nbre_Heures_Budgetes = nbre_Heures_Budgetes;
+	}
+
+	public ArrayList<Employe> getListe_Employes() {
+		return liste_Employes;
+	}
+
+	public void setListe_Employes(ArrayList<Employe> liste_Employes) {
+		this.liste_Employes = liste_Employes;
+	}
+
+	public ArrayList<Discipline> getListe_Disciplines() {
+		return liste_Disciplines;
+	}
+
+	public void setListe_Disciplines(ArrayList<Discipline> liste_Disciplines) {
+		this.liste_Disciplines = liste_Disciplines;
+	}
+
 	public void ajouter_Discipline(String nom, double heures) {
 		this.liste_Disciplines.add(new Discipline(nom, heures));
 	}
