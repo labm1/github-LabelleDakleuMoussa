@@ -1,6 +1,7 @@
 package timelog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Projet {
@@ -109,16 +110,20 @@ public class Projet {
 		return date_Debut;
 	}
 
-	public void setDate_Debut(Date date_Debut) {
-		this.date_Debut = date_Debut;
+	public void setDate_Debut(String date) {
+		Calendar calendrier = Calendar.getInstance();
+		calendrier.set(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)), Integer.parseInt(date.substring(8)));
+		this.date_Debut = calendrier.getTime();
 	}
 
 	public Date getDate_Fin() {
 		return date_Fin;
 	}
 
-	public void setDate_Fin(Date date_Fin) {
-		this.date_Fin = date_Fin;
+	public void setDate_Fin(String date) {
+		Calendar calendrier = Calendar.getInstance();
+		calendrier.set(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7)), Integer.parseInt(date.substring(8)));
+		this.date_Fin = calendrier.getTime();
 	}
 	
 }

@@ -15,6 +15,7 @@ public class Main {
 		Employe e = new Employe("Employé1",1,15,17,d,d,123456789);
 		Admin a = new Admin("admin",10,15,17,d,d,123456789);
 		Compagnie c = new Compagnie(a);
+		
 		c.ajouterProjet(pro);
 		c.ajouter_Employe(e);
 		pro.ajouter_Employe(e);
@@ -44,7 +45,7 @@ public class Main {
 		
 		while(!deconnecter) {
 			if (p.nom.equals("admin"))
-				deconnecter = menuAdmin(p,c);
+				deconnecter = menuAdmin((Admin)p,c);
 			else
 				deconnecter = menuEmploye(p,c);
 		}
@@ -87,7 +88,10 @@ public class Main {
 		return false;
 	}
 	
-	public static boolean menuAdmin(Personne p, Compagnie c) {
+	
+	
+	
+	public static boolean menuAdmin(Admin p, Compagnie c) {
 		System.out.println("\n\nBienvenue " + p.getNom());
 		System.out.println("Menu admin");
 		System.out.println("1. Modifier NPE");
@@ -144,26 +148,69 @@ public class Main {
 				System.out.println("Date fin: AAAA/MM/JJ");
 				String dateFin = scan.next();
 				
-				Calendar calendrier = Calendar.getInstance();
-				calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7)), Integer.parseInt(dateDebut.substring(8)));
-				Date debut = calendrier.getTime();
-				
-				calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7)), Integer.parseInt(dateFin.substring(8)));
-				Date fin = calendrier.getTime();
-				
-				Projet projet = new Projet(nom, id, design1, design2, implementation, test, deploiement, debut, fin);
-				c.ajouterProjet(projet);
+				p.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin,c);
 				System.out.println("Projet créé!");
 			}
 			if(choix2 == 2) {
-				System.out.println("choisir projet");
+				System.out.println("Choisir le projet: ");
+				for (int i = 1; i<=c.getListeProjets().size();i++) {
+					System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+				}
+				Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+				System.out.println("Voulez-vous vraiment supprimer "+ projet.getNom_Projet() + " ? (y/n)");
+				char rep = scan.next().charAt(0);
+				if(rep == 'y') {
+					c.supprimerProjet(projet);
+					System.out.println(projet.getNom_Projet() + " supprimé!");
+				}else
+					System.out.println(projet.getNom_Projet() + " non supprimé, retour au menu");
+				
 			}
 			if(choix2 == 3) {
-				System.out.println("Modifier");
+				System.out.println("Choisir le projet: ");
+				for (int i = 1; i<=c.getListeProjets().size();i++) {
+					System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+				}
+				Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+				
+				System.out.println("Modifier Projet " + projet.getNom_Projet());
 				System.out.println("1.nom");
 				System.out.println("2.id");
-				System.out.println("3.heure");
-				System.out.println("4.date");
+				System.out.println("3.heures budgétés des disciplines");
+				System.out.println("4.date de début");
+				System.out.println("5.date de fin");
+				
+				int choix3 = scan.nextInt();
+				
+				if(choix3 == 1) {
+					System.out.println("Nom = "+ projet.getNom_Projet());
+					System.out.println("Nouveau nom:");
+					projet.setNom_Projet(scan.next());
+					System.out.println("Le nouveau nom est "+ projet.getNom_Projet());
+				}
+				if(choix3 == 2) {
+					System.out.println("ID = "+ projet.getId());
+					System.out.println("Nouveau ID:");
+					projet.setId(scan.nextInt());
+					System.out.println("Le nouvel id est "+ projet.getId());
+				}
+				if(choix3 == 3) {
+					
+				}
+				if(choix3 == 4) {
+					System.out.println("Date de début = "+ projet.getDate_Debut().toString());
+					System.out.println("Nouvelle date de début: AAAA/MM/JJ");
+					String dateDebut = scan.next();
+					projet.setDate_Debut(dateDebut);
+					System.out.println("Le nouvelle date de début est "+ projet.getDate_Debut().toString());
+				}
+				if(choix3 == 5) {
+					System.out.println("Date de Fin = "+ projet.getDate_Fin().toString());
+					System.out.println("Nouvelle date de fin: AAAA/MM/JJ");
+					String dateFin = scan.next();
+					projet.setDate_Fin(dateFin);
+					System.out.println("Le nouvelle date de fin est "+ projet.getDate_Fin().toString());
+				}
 			}
 			break;
 		case 3:
@@ -201,17 +248,32 @@ public class Main {
 			
 			Projet projet = c.getListeProjets().get(scan.nextInt()-1);
 			
+			System.out.println("Choisir l'employé: ");
 			for (int i = 1; i<=c.getListe_Employes().size();i++) {
 				System.out.println("Choisir l'employé: ");
 				System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
 			}
-			Employe per = (Employe) c.getListe_Employes().get(scan.nextInt()-1);
+			Employe per = c.getListe_Employes().get(scan.nextInt()-1);
 			projet.ajouter_Employe(per);
 			System.out.println("Employé "+ per.getNom() + " a été ajouté au projet "+ projet.getNom_Projet());
 			
 			break;
 		case 6:
-			System.out.println("Choisir Projet -> choisir employé");
+			System.out.println("Choisir le projet: ");
+			for (int i = 1; i<=c.getListeProjets().size();i++) {
+				System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+			}
+			
+			projet = c.getListeProjets().get(scan.nextInt()-1);
+			
+			System.out.println("Choisir l'employé: ");
+			for (int i = 1; i<=projet.getListe_Employes().size();i++) {
+				System.out.println("Choisir l'employé: ");
+				System.out.println(i+". "+projet.getListe_Employes().get(i-1).getNom());
+			}
+			Employe e = c.getListe_Employes().get(scan.nextInt()-1);
+			projet.supprimer_Employe(e);
+			System.out.println("Employé "+ e.getNom() + " a été supprimé du projet "+ projet.getNom_Projet());
 			break;
 		case 7:
 			System.out.println("Rapport :)");
