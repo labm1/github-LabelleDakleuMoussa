@@ -89,21 +89,13 @@ package timelog;
 	public void setNumero_nas(int numero_nas) {
 		this.numero_nas = numero_nas;
 	}
-
-<<<<<<< HEAD
-=======
 	public boolean seconnecter(int id) {
 		
 		if (id==this.id_personne  )
 			return true;
 		else return false;
 
-		}
->>>>>>> 35e18aa8838b3ed6403a26135a4b4865cf75fa55
-
-
-
-		
+		}	
 		
 	}
 	

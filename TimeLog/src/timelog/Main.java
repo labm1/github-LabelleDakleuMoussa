@@ -5,33 +5,38 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
 		boolean deconnecter = true;
 		Compagnie c = new Compagnie();
-		c.addPersonne(new Employe("Employé1",1));
+		c.ajouterPersonne(new Employe("Employé1",1));
 		int essais = 0,id;
 		String user;
 		Personne p;
 		
 		do {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Connexion\nUser:");
-		user = scan.next();
-		System.out.println("ID:");
-		id = scan.nextInt();
-		
-		p = c.trouverPersonne(user);
-		if(!p.seConnecter(id)) {
-			System.out.println("Mauvais nom d'utilisateur ou mot de passe; veuillez réessayer");
-			essais++;
-			if (essais == )
-		}
-		else {
-			deconnecter = false;
+			System.out.println("Connexion\nUser:");
+			user = scan.next();
+			System.out.println("ID:");
+			id = scan.nextInt();
+			
+			p = c.trouverPersonne(user);
+			if(!p.seconnecter(id)) {
+				System.out.println("Mauvais nom d'utilisateur ou mot de passe; veuillez réessayer");
+				essais++;
+				if (essais == 3) 
+					System.out.println("Mauvais identifant 3 fois de suite: fin du programme");
+			}
+			else
+				deconnecter = false;
 		}
 		while(deconnecter && essais<3);
-		int NPE = 2;
 		
 		while(!deconnecter) {
+			if (p.nom.equals("admin"))
+				menuAdmin(p,c);
+			else
+				menuEmploye(p,c);
+		
 			System.out.println("Bienvenue "+user);
 			System.out.println("Menu Employé");
 			System.out.println("1. Début d'activité");
@@ -156,5 +161,13 @@ public class Main {
 				break;
 			}
 		}
+	}
+	
+	public static void menuEmploye(Personne p, Compagnie c) {
+		
+	}
+	
+	public static void menuAdmin(Personne p, Compagnie c) {
+		
 	}
 }
