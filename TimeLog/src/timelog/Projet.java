@@ -9,7 +9,7 @@ public class Projet {
 	private double nbre_Heures_Budgetes;
 	private Date date_Debut;
 	private Date date_Fin;
-	private ArrayList<Personne> liste_Personnes;
+	private ArrayList<Employe> liste_Employes;
 	private ArrayList<Discipline> liste_Disciplines;
 	
 	public Projet(String nom,int id,double heuresDesign1, double heuresDesign2, 
@@ -23,7 +23,7 @@ public class Projet {
 		this.date_Debut = debut;
 		this.date_Fin = fin;
 		
-		this.liste_Personnes = new ArrayList<>();
+		this.liste_Employes = new ArrayList<>();
 		this.liste_Disciplines = new ArrayList<>();
 		this.liste_Disciplines.add(new Discipline("Design1", heuresDesign1));
 		this.liste_Disciplines.add(new Discipline("Design2", heuresDesign2));
@@ -32,12 +32,12 @@ public class Projet {
 		this.liste_Disciplines.add(new Discipline("Déploiement", heuresDeploiement));
 	}
 	
-	public void ajouter_Personne(Personne p) {
-		this.liste_Personnes.add(p);
+	public void ajouter_Employe(Employe p) {
+		this.liste_Employes.add(p);
 	}
 	
-	public void supprimer_Personne(Personne p) {
-		this.liste_Personnes.remove(p);
+	public void supprimer_Employe(Employe p) {
+		this.liste_Employes.remove(p);
 	}
 	
 	public void ajouter_Discipline(String nom, double heures) {
