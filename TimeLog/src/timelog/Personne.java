@@ -7,19 +7,19 @@ package timelog;
 
 	public class Personne {
 
-	String nom;
+	 private String nom;
 
-	int id_personne;
+	 private int id_personne;
 
-	int taux_horaire_base;
+	 private int taux_horaire_base;
+	
+	 private int taux_horaire_supp;
 
-	int taux_horaire_supp;
+	 private Date date_embauche;
 
-	Date date_embauche;
+	 private Date date_depart;
 
-	Date date_depart;
-
-	int numero_nas;
+	 private int numero_nas;
 
 	ArrayList <Employe> l1;
 
