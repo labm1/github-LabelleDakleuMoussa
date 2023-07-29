@@ -90,7 +90,13 @@ package timelog;
 		this.numero_nas = numero_nas;
 	}
 
+	public boolean seconnecter(int id) {
+		
+		if (id==this.id_personne  )
+			return true;
+		else return false;
 
+		}
 
 
 
