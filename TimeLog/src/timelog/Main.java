@@ -42,19 +42,18 @@ public class Main {
 			}
 			else
 				deconnecter = false;
-		}
-		while(deconnecter && essais<3);
+		} while(deconnecter && essais<3);
 		
 		while(!deconnecter) {
 			if (p.getNom().equals("admin"))
 				deconnecter = menuAdmin((Admin)p,c);
 			else
-				deconnecter = menuEmploye(p,c);
+				deconnecter = menuEmploye((Employe)p,c);
 		}
 	}
 	
-	public static boolean menuEmploye(Personne p, Compagnie c) {
-		System.out.println("\n\n1Bienvenue "+p.getNom());
+	public static boolean menuEmploye(Employe e, Compagnie c) {
+		System.out.println("\n\n1Bienvenue "+e.getNom());
 		System.out.println("Menu Employé");
 		System.out.println("1. Début d'activité");
 		System.out.println("2. Fin d'activité");
@@ -197,7 +196,15 @@ public class Main {
 					System.out.println("Le nouvel id est "+ projet.getId());
 				}
 				if(choix3 == 3) {
-					
+					System.out.println("Changer les heures budgétées des disciplines:");
+					for(int i = 1; i <= projet.getListe_Disciplines().size();i++) {
+						System.out.println(i+". " + projet.getListe_Disciplines().get(i-1).getNom_Discipline());
+					}
+					Discipline d = projet.getListe_Disciplines().get(scan.nextInt()-1);
+					System.out.println("L'heure budgétée de la discipline "+d.getNom_Discipline()+" est de "+ d.getNbre_Heures_budgetes() +"h");
+					System.out.println("Nouvelle heure budgétée: ");
+					d.setNbre_Heures_budgetes(scan.nextDouble());
+					System.out.println("Le nouveau nombre d'heure budgété de la discipline "+d.getNom_Discipline()+" est de "+d.getNbre_Heures_budgetes()+"h");
 				}
 				if(choix3 == 4) {
 					System.out.println("Date de début = "+ projet.getDate_Debut().toString());
