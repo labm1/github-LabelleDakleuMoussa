@@ -23,4 +23,16 @@ public class Admin extends Personne{
 	public void supprimer_Projet(Projet p, Compagnie c) {
 		c.supprimerProjet(p);
 	}
+
+	public void ajouter_Employe(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
+			String date_depart, int numero_nas , Compagnie c) {
+		Calendar calendrier = Calendar.getInstance();
+		calendrier.set(Integer.parseInt(date_embauche.substring(0, 4)), Integer.parseInt(date_embauche.substring(5, 7)), Integer.parseInt(date_embauche.substring(8)));
+		Date embauche = calendrier.getTime();
+		
+		calendrier.set(Integer.parseInt(date_depart.substring(0, 4)), Integer.parseInt(date_depart.substring(5, 7)), Integer.parseInt(date_depart.substring(8)));
+		Date depart = calendrier.getTime();
+		c.ajouter_Employe(new Employe (nom, id_personne, taux_horaire_base, taux_horaire_supp, embauche, depart ,numero_nas ));
+
+}
 }

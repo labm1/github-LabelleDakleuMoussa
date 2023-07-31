@@ -232,14 +232,31 @@ public class Main {
 				System.out.println("demander nom");
 				String nom = scan.next();
 				
-				System.out.println("demander id:");
+				System.out.println(" id:");
 				int id = scan.nextInt();
+				
+				System.out.println("taux horaire de base");
+				int taux_horaire_base = scan.nextInt();
+				
+				System.out.println("taux horaire supplementaire");
+				int taux_horaire_supp = scan.nextInt(); 
 				
 				System.out.println("poste:");
 				String poste = scan.next();
 				
-				System.out.println("Date début: AAAA/MM/JJ");
-				String dateDebut = scan.next();
+				System.out.println("Date embauche: AAAA/MM/JJ");
+				String date_embauche = scan.next();
+				
+				System.out.println("Date depart: AAAA/MM/JJ");
+				String date_depart = scan.next();
+				
+				System.out.println(" numero de nas:");
+				int numero_nas = scan.nextInt();
+				
+				admin.ajouter_Employe(nom, id, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas, c);
+				System.out.println("Employer ajouter");
+				
+				
 			}
 			if(choix3 == 2) {
 				System.out.println("demander nom,id,date,poste,etc");
