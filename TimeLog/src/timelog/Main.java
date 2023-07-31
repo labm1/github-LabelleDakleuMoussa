@@ -65,21 +65,41 @@ public class Main {
 		
 		switch (choix) {
 		case 1:
-			System.out.println("1. projet1");
-			System.out.println("2. projet2");
-			System.out.println("3. projet3");
+			System.out.println("Début d'activité sur le projet:");
+			for(int i = 1; i<=c.getListeProjets().size();i++) {
+				System.out.println(i+". "+c.getListeProjets().get(i-1));
+			}
+			Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+			
+			System.out.println("Début d'activité sur la discipline du projet "+projet.getNom_Projet()+":");
+			for(int i = 1; i<=projet.getListe_Disciplines().size();i++) {
+				System.out.println(i+". "+projet.getListe_Disciplines().get(i-1));
+			}
+			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1));
 			break;
 		case 2:
 			System.out.println("Fin d'activité");
+			e.terminerActivite();
 			break;
 		case 3:
-			System.out.println("Salaire brut et salaire net");
+			System.out.println("Talon de paye");
+			System.out.println("Salaire à partir d'une certaine date ou non? (y/n)");
+			char rep = scan.next().charAt(0);
+			if(rep == 'y') {
+				System.out.println("Veuillez indiquer à partir de quelle date: (AAAA/MM/JJ)");
+				e.demander_Periode(scan.next());
+			}else {
+				System.out.println("Depuis la dernière période de paye");
+				e.demander_Talon();
+			}
 			break;
 		case 4:
 			System.out.println("Heure par projet par discipline");
+			e.demander_Nbre_Heure_Travaille();
 			break;
 		case 5:
 			System.out.println("Heures supplémentaires par projet par discipline");
+			e.demander_Nbre_Heure_Supp_Travaille();
 			break;
 		case 6:
 			return true;
@@ -283,7 +303,7 @@ public class Main {
 			System.out.println("Employé "+ e.getNom() + " a été supprimé du projet "+ projet.getNom_Projet());
 			break;
 		case 7:
-			System.out.println("Rapport :)");
+			admin.rapport_Salaire();
 			break;
 		case 8:
 			return true;
