@@ -1,6 +1,5 @@
 package timelog;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -13,12 +12,15 @@ public class Main {
 		
 		Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
 		Employe e = new Employe("Employé1",1,15,17,d,d,123456789);
+		Employe e2 = new Employe("Employé2",1,15,17,d,d,123456789);
 		Admin a = new Admin("admin",10,15,17,d,d,123456789);
 		Compagnie c = new Compagnie(a);
 		
 		c.ajouterProjet(pro);
 		c.ajouter_Employe(e);
 		pro.ajouter_Employe(e);
+		c.ajouter_Employe(e2);
+		pro.ajouter_Employe(e2);
 		
 		
 		int essais = 0,id;
@@ -44,7 +46,7 @@ public class Main {
 		while(deconnecter && essais<3);
 		
 		while(!deconnecter) {
-			if (p.nom.equals("admin"))
+			if (p.getNom().equals("admin"))
 				deconnecter = menuAdmin((Admin)p,c);
 			else
 				deconnecter = menuEmploye(p,c);
@@ -91,8 +93,8 @@ public class Main {
 	
 	
 	
-	public static boolean menuAdmin(Admin p, Compagnie c) {
-		System.out.println("\n\nBienvenue " + p.getNom());
+	public static boolean menuAdmin(Admin admin, Compagnie c) {
+		System.out.println("\n\nBienvenue " + admin.getNom());
 		System.out.println("Menu admin");
 		System.out.println("1. Modifier NPE");
 		System.out.println("2. Modifier Projet");
@@ -148,7 +150,7 @@ public class Main {
 				System.out.println("Date fin: AAAA/MM/JJ");
 				String dateFin = scan.next();
 				
-				p.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin,c);
+				admin.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin,c);
 				System.out.println("Projet créé!");
 			}
 			if(choix2 == 2) {
@@ -160,7 +162,7 @@ public class Main {
 				System.out.println("Voulez-vous vraiment supprimer "+ projet.getNom_Projet() + " ? (y/n)");
 				char rep = scan.next().charAt(0);
 				if(rep == 'y') {
-					c.supprimerProjet(projet);
+					admin.supprimer_Projet(projet,c);
 					System.out.println(projet.getNom_Projet() + " supprimé!");
 				}else
 					System.out.println(projet.getNom_Projet() + " non supprimé, retour au menu");
@@ -234,10 +236,10 @@ public class Main {
 			}
 			break;
 		case 4:
-			System.out.println("ID = "+p.getId_personne());
+			System.out.println("ID = "+admin.getId_personne());
 			System.out.println("Nouveau ID:");
 			int id = scan.nextInt();
-			p.setId_personne(id);
+			admin.setId_personne(id);
 			System.out.println("Le nouvel ID est "+id);
 			break;
 		case 5:
@@ -250,7 +252,6 @@ public class Main {
 			
 			System.out.println("Choisir l'employé: ");
 			for (int i = 1; i<=c.getListe_Employes().size();i++) {
-				System.out.println("Choisir l'employé: ");
 				System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
 			}
 			Employe per = c.getListe_Employes().get(scan.nextInt()-1);
@@ -268,7 +269,6 @@ public class Main {
 			
 			System.out.println("Choisir l'employé: ");
 			for (int i = 1; i<=projet.getListe_Employes().size();i++) {
-				System.out.println("Choisir l'employé: ");
 				System.out.println(i+". "+projet.getListe_Employes().get(i-1).getNom());
 			}
 			Employe e = c.getListe_Employes().get(scan.nextInt()-1);

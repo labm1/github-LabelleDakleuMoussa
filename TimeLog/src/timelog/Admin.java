@@ -20,7 +20,7 @@ public class Admin extends Personne{
 		c.ajouterProjet(new Projet(nom, id, heuresDesign1, heuresDesign2, heuresImplementation, heuresTest, heuresDeploiement, debut, fin));
 	}
 	
-	public void supprimer_Projet() {
-		
+	public void supprimer_Projet(Projet p, Compagnie c) {
+		c.supprimerProjet(p);
 	}
 }
