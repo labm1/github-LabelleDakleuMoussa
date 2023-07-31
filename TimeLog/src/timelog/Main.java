@@ -173,7 +173,17 @@ public class Main {
 			System.out.println("3.Modifier");
 			int choix3 = scan.nextInt();
 			if(choix3 == 1) {
-				System.out.println("demander nom/id");
+				System.out.println("demander nom");
+				String nom = scan.next();
+				
+				System.out.println("demander id:");
+				int id = scan.nextInt();
+				
+				System.out.println("poste:");
+				String poste = scan.next();
+				
+				System.out.println("Date début: AAAA/MM/JJ");
+				String dateDebut = scan.next();
 			}
 			if(choix3 == 2) {
 				System.out.println("demander nom,id,date,poste,etc");
