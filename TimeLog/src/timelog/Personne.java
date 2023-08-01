@@ -10,6 +10,8 @@ public class Personne {
  private String nom;
 
  private int id_personne;
+ 
+ private String poste;
 
  private int taux_horaire_base;
 
@@ -23,10 +25,11 @@ public class Personne {
 
 ArrayList <Employe> l1;
 
-public Personne(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
+public Personne(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
 		Date date_depart, int numero_nas) {
 	this.nom = nom;
 	this.id_personne = id_personne;
+	this.poste = poste;
 	this.taux_horaire_base = taux_horaire_base;
 	this.taux_horaire_supp = taux_horaire_supp;
 	this.date_embauche = date_embauche;

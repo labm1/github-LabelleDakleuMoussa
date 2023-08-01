@@ -11,12 +11,14 @@ public class Main {
 		
 		
 		Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
-		Employe e = new Employe("Employé1",1,15,17,d,d,123456789);
-		Employe e2 = new Employe("Employé2",1,15,17,d,d,123456789);
-		Admin a = new Admin("admin",10,15,17,d,d,123456789);
+		Projet pro2 = new Projet("Projet2",1,10,10,10,10,10,d,d);
+		Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
+		Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
+		Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
 		Compagnie c = new Compagnie(a);
 		
 		c.ajouterProjet(pro);
+		c.ajouterProjet(pro2);
 		c.ajouter_Employe(e);
 		pro.ajouter_Employe(e);
 		c.ajouter_Employe(e2);
@@ -53,7 +55,7 @@ public class Main {
 	}
 	
 	public static boolean menuEmploye(Employe e, Compagnie c) {
-		System.out.println("\n\n1Bienvenue "+e.getNom());
+		System.out.println("\n\nBienvenue "+e.getNom());
 		System.out.println("Menu Employé");
 		System.out.println("1. Début d'activité");
 		System.out.println("2. Fin d'activité");
@@ -67,14 +69,18 @@ public class Main {
 		switch (choix) {
 		case 1:
 			System.out.println("Début d'activité sur le projet:");
-			for(int i = 1; i<=c.getListeProjets().size();i++) {
-				System.out.println(i+". "+c.getListeProjets().get(i-1));
+			int j = 1;
+			for(int i = 0; i<c.getListeProjets().size();i++) {
+				Projet p = c.getListeProjets().get(i);
+				if(p.getListe_Employes().contains(e)) {
+				System.out.println(j+". "+p.getNom_Projet());
+				}
 			}
 			Projet projet = c.getListeProjets().get(scan.nextInt()-1);
 			
 			System.out.println("Début d'activité sur la discipline du projet "+projet.getNom_Projet()+":");
 			for(int i = 1; i<=projet.getListe_Disciplines().size();i++) {
-				System.out.println(i+". "+projet.getListe_Disciplines().get(i-1));
+				System.out.println(i+". "+projet.getListe_Disciplines().get(i-1).getNom_Discipline());
 			}
 			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1));
 			break;
@@ -299,7 +305,7 @@ public class Main {
 				System.out.println(" numero de nas:");
 				int numero_nas = scan.nextInt();
 				
-				admin.ajouter_Employe(nom, id, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas, c);
+				admin.ajouter_Employe(nom, id, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas, c);
 				System.out.println("Employer ajouter");
 				
 				
@@ -335,8 +341,8 @@ public class Main {
 				System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
 			}
 			Employe per = c.getListe_Employes().get(scan.nextInt()-1);
-			projet.ajouter_Employe(per);
-			System.out.println("Employé "+ per.getNom() + " a été ajouté au projet "+ projet.getNom_Projet());
+			admin.assigner_Projet(per,projet,c);
+			
 			
 			break;
 		case 6:
