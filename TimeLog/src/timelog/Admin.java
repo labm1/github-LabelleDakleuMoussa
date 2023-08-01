@@ -7,8 +7,8 @@ public class Admin extends Personne{
 	
 	private ArrayList<Employe> liste_Employes;
 	
-	public Admin(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
-			Date date_depart, int numero_nas) {
+	public Admin(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
+			String date_depart, int numero_nas) {
 		super(nom, id_personne, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
 		this.liste_Employes = new ArrayList<>();
 	
@@ -34,7 +34,7 @@ public class Admin extends Personne{
 	}
 	
 
-	public void ajouter_Employe(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
+	public void ajouter_Employe(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
 			String date_depart, int numero_nas , Compagnie c) {
 		Calendar calendrier = Calendar.getInstance();
 		calendrier.set(Integer.parseInt(date_embauche.substring(0, 4)), Integer.parseInt(date_embauche.substring(5, 7)), Integer.parseInt(date_embauche.substring(8)));
