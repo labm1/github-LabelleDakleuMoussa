@@ -23,4 +23,8 @@ public class Admin extends Personne{
 	public void supprimer_Projet(Projet p, Compagnie c) {
 		c.supprimerProjet(p);
 	}
+	
+	public void rapport_Salaire() {
+		
+	}
 }

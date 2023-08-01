@@ -60,7 +60,8 @@ public class Main {
 		System.out.println("3. Talon");
 		System.out.println("4. Heures travaillées de base");
 		System.out.println("5. Heures travaillées supplémentaires");
-		System.out.println("6. Se déconnecter");
+		System.out.println("6. Rapport de progression");
+		System.out.println("7. Se déconnecter");
 		int choix = scan.nextInt();
 		
 		switch (choix) {
@@ -79,7 +80,7 @@ public class Main {
 			break;
 		case 2:
 			System.out.println("Fin d'activité");
-			e.terminerActivite();
+			e.terminer_Activite();
 			break;
 		case 3:
 			System.out.println("Talon de paye");
@@ -95,13 +96,37 @@ public class Main {
 			break;
 		case 4:
 			System.out.println("Heure par projet par discipline");
-			e.demander_Nbre_Heure_Travaille();
+			System.out.println("Veuillez indiquer la date de début de la période désirée (AAAA/MM/JJ)");
+			String debut = scan.next();
+			System.out.println("Veuillez indiquer la date de fin de la période désirée (AAAA/MM/JJ)");
+			String fin = scan.next();
+			e.demander_Nbre_Heure_Travaille(debut,fin);
 			break;
 		case 5:
 			System.out.println("Heures supplémentaires par projet par discipline");
-			e.demander_Nbre_Heure_Supp_Travaille();
+			System.out.println("Heure par projet par discipline");
+			System.out.println("Veuillez indiquer la date de début de la période désirée (AAAA/MM/JJ)");
+			debut = scan.next();
+			System.out.println("Veuillez indiquer la date de fin de la période désirée (AAAA/MM/JJ)");
+			fin = scan.next();
+			e.demander_Nbre_Heure_Supp_Travaille(debut,fin);
 			break;
 		case 6:
+			System.out.println("Rapport de progression");
+			System.out.println("Indiquez quel type de rapport vous voulez:");
+			System.out.println("1. Rapport global");
+			for(int i = 2; i<=c.getListeProjets().size()+1;i++) {
+				System.out.println(i+". Rapport du projet "+c.getListeProjets().get(i-2).getNom_Projet());
+			}
+			int choix2 = scan.nextInt();
+			if(choix2 > 1) {
+				projet = c.getListeProjets().get(choix2-2);
+				e.rapport_Etat_Projet(projet);
+			} else {
+				e.rapport_Total_Projet();
+			}
+			break;
+		case 7:
 			return true;
 		default:
 			break;
@@ -122,7 +147,8 @@ public class Main {
 		System.out.println("5. Assigner employé projet");
 		System.out.println("6. Supprimer employé projet");
 		System.out.println("7. Rapport salaire total");
-		System.out.println("8. Se déconnecter");
+		System.out.println("8. Rapport de progression");
+		System.out.println("9. Se déconnecter");
 		int choix = scan.nextInt();
 		
 		
@@ -306,6 +332,21 @@ public class Main {
 			admin.rapport_Salaire();
 			break;
 		case 8:
+			System.out.println("Rapport de progression");
+			System.out.println("Indiquez quel type de rapport vous voulez:");
+			System.out.println("1. Rapport global");
+			for(int i = 2; i<=c.getListeProjets().size()+1;i++) {
+				System.out.println(i+". Rapport du projet "+c.getListeProjets().get(i-2).getNom_Projet());
+			}
+			choix2 = scan.nextInt();
+			if(choix2 > 1) {
+				projet = c.getListeProjets().get(choix2-2);
+				admin.rapport_Etat_Projet(projet);
+			} else {
+				admin.rapport_Total_Projet();
+			}
+			break;
+		case 9:
 			return true;
 		default:
 			break;
