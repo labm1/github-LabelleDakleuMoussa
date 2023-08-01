@@ -50,4 +50,17 @@ public class Employe extends Personne {
 		Date fin = calendrier.getTime();
 		//imprimer le nombre d'heures travaillées supplémentaires entre les deux dates
 	}
+
+/* public connecter_activite(){
+	
+if (seconnecter) {
+	
+	}
+	// public terminer_activite(){}
+	// public demander_talon(){}
+	// public demander_cheques(){}
+	// public rapport_salaire_par_projet(){}
+	// public demander_nbr_heure_travailler(){}
+	// public demander nbr_heure_supp_travailler(){}
+}*/
 }
