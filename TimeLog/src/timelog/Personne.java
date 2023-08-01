@@ -1,9 +1,12 @@
 package timelog;
 
+<<<<<<< HEAD
 
 
 import java.util.ArrayList;
 
+=======
+>>>>>>> 57004960d13b2de275e9d3542dcb464683a0d705
 import java.util.Date;
 import java.util.Calendar;
 
@@ -23,9 +26,8 @@ private Date date_depart;
 
 private int numero_nas;
 
-private ArrayList <Employe> l1;
 
-public Personne(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
+public Personne(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
 		Date date_depart, int numero_nas) {
 	this.nom = nom;
 	this.id_personne = id_personne;
@@ -123,6 +125,13 @@ else return false;
 		
 	}
 		
+	public String getPoste() {
+		return poste;
+	}
+
+	public void setPoste(String poste) {
+		this.poste = poste;
+	}
 }
 	
 

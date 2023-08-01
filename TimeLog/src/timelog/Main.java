@@ -47,12 +47,14 @@ public class Main {
 		} while(deconnecter && essais<3);
 		
 		while(!deconnecter) {
-			if (p.getNom().equals("admin"))
+			if (p.getNom().equals(a.getNom()))
 				deconnecter = menuAdmin((Admin)p,c);
 			else
 				deconnecter = menuEmploye((Employe)p,c);
 		}
 	}
+	
+	
 	
 	public static boolean menuEmploye(Employe e, Compagnie c) {
 		System.out.println("\n\nBienvenue "+e.getNom());
