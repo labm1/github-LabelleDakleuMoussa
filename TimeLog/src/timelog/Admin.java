@@ -45,4 +45,17 @@ public class Admin extends Personne{
 		c.ajouter_Employe(new Employe (nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, embauche, depart ,numero_nas ));
 
 	}
+	public void assigner_Projet(Employe e, Projet p, Compagnie c) {
+		int i = 0;
+		for (Projet projet : c.getListeProjets()) {
+			if(projet.getListe_Employes().contains(e))
+				i++;
+		}
+		if(i>=c.getNpe()) {
+			System.out.println("Impossible d'ajouter l'employé, car le nombre de projet par personne maximal est atteint pour cet employé");
+			return;
+		}
+		p.ajouter_Employe(e);
+		System.out.println("Employé "+ e.getNom() + " a été ajouté au projet "+ p.getNom_Projet());
+	}
 }
