@@ -1,8 +1,5 @@
 package timelog;
 
-
-
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Personne {
@@ -22,8 +19,6 @@ public class Personne {
  private Date date_depart;
 
  private int numero_nas;
-
-ArrayList <Employe> l1;
 
 public Personne(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
 		Date date_depart, int numero_nas) {
@@ -108,6 +103,13 @@ public Personne(String nom, int id_personne, String poste, int taux_horaire_base
 		
 	}
 		
+	public String getPoste() {
+		return poste;
+	}
+
+	public void setPoste(String poste) {
+		this.poste = poste;
+	}
 }
 	
 

@@ -54,6 +54,8 @@ public class Main {
 		}
 	}
 	
+	
+	
 	public static boolean menuEmploye(Employe e, Compagnie c) {
 		System.out.println("\n\nBienvenue "+e.getNom());
 		System.out.println("Menu Employé");
@@ -310,15 +312,17 @@ public class Main {
 				
 				
 			}
-			if(choix3 == 2) {
+			if(choix3 == 2) { //À FINIR
 				System.out.println("demander nom,id,date,poste,etc");
 			}
-			if(choix3 == 3) {
+			if(choix3 == 3) { //À FINIR
 				System.out.println("Modifier");
 				System.out.println("1.nom");
 				System.out.println("2.id");
 				System.out.println("3.poste");
-				System.out.println("4.date");
+				System.out.println("4.date d'embauche");
+				System.out.println("5.date de départ");
+				
 			}
 			break;
 		case 4:

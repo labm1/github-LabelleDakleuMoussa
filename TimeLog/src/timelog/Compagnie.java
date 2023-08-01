@@ -1,6 +1,7 @@
 package timelog;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Compagnie {
 	private ArrayList<Employe> liste_Employes;
@@ -79,5 +80,9 @@ public class Compagnie {
 				return p;
 		}
 		return null;
+	}
+	
+	public int trouverTempsEnHeures(Date debut, Date fin) {
+		return (int)(debut.getTime()-fin.getTime())/(1000*60);
 	}
 }
