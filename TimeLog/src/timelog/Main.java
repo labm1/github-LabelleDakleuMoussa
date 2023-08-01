@@ -47,7 +47,7 @@ public class Main {
 		} while(deconnecter && essais<3);
 		
 		while(!deconnecter) {
-			if (p.getNom().equals("admin"))
+			if (p.getNom().equals(a.getNom()))
 				deconnecter = menuAdmin((Admin)p,c);
 			else
 				deconnecter = menuEmploye((Employe)p,c);
