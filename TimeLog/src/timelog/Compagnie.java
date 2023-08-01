@@ -36,7 +36,7 @@ public class Compagnie {
 	}
 	
 	public void enlever_Employe(Employe e){
-		liste_Employes.add(e);
+		liste_Employes.remove(e);
 	}
 	
 	public ArrayList<Employe> getListe_Employes() {
