@@ -1,12 +1,23 @@
 package timelog;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Admin extends Personne{
 	
+	private ArrayList<Employe> liste_Employes;
+	
+<<<<<<< HEAD
+	public Admin(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
+			String date_depart, int numero_nas) {
+		super(nom, id_personne, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
+=======
 	public Admin(String nom, int id_personne,String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
 			Date date_depart, int numero_nas) {
 		super(nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
+>>>>>>> 57004960d13b2de275e9d3542dcb464683a0d705
+		this.liste_Employes = new ArrayList<>();
+	
 	}
 	
 	public void ajouter_Projet(String nom,int id,double heuresDesign1, double heuresDesign2, 
@@ -24,11 +35,13 @@ public class Admin extends Personne{
 		c.supprimerProjet(p);
 	}
 	
-	public void rapport_Salaire() {
-		
+	public void supprimer_Employe(Employe p, Compagnie c) {
+		c.enlever_Employe(p);
 	}
+	
 
-	public void ajouter_Employe(String nom, int id_personne,String poste, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
+	public void ajouter_Employe(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
+
 			String date_depart, int numero_nas , Compagnie c) {
 		Calendar calendrier = Calendar.getInstance();
 		calendrier.set(Integer.parseInt(date_embauche.substring(0, 4)), Integer.parseInt(date_embauche.substring(5, 7)), Integer.parseInt(date_embauche.substring(8)));
@@ -39,7 +52,6 @@ public class Admin extends Personne{
 		c.ajouter_Employe(new Employe (nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, embauche, depart ,numero_nas ));
 
 	}
-	
 	public void assigner_Projet(Employe e, Projet p, Compagnie c) {
 		int i = 0;
 		for (Projet projet : c.getListeProjets()) {

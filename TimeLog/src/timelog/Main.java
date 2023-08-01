@@ -312,18 +312,94 @@ public class Main {
 				
 				
 			}
-			if(choix3 == 2) { //À FINIR
-				System.out.println("demander nom,id,date,poste,etc");
+			if(choix3 == 2) {
+				System.out.println("Choisir le employer: ");
+				for (int i = 1; i<=c.getListe_Employes().size();i++) {
+					System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
+				}
+				Employe employe = c.getListe_Employes().get(scan.nextInt()-1);
+				System.out.println("Voulez-vous vraiment supprimer "+ employe.getNom() + " ? (y/n)");
+				char rep = scan.next().charAt(0);
+				if(rep == 'y') {
+					admin.supprimer_Employe(employe,c);
+					System.out.println(employe.getNom() + " supprimé!");
+				}else
+					System.out.println(employe.getNom() + " non supprimé, retour au menu");
 			}
-			if(choix3 == 3) { //À FINIR
-				System.out.println("Modifier");
-				System.out.println("1.nom");
-				System.out.println("2.id");
-				System.out.println("3.poste");
-				System.out.println("4.date d'embauche");
-				System.out.println("5.date de départ");
+			
 				
+				if(choix3== 3) {
+					System.out.println("Choisir l'employe: ");
+					for (int i = 1; i<=c.getListe_Employes().size();i++) {
+						System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
+					}
+					Employe employe = c.getListe_Employes().get(scan.nextInt()-1);
+					
+					System.out.println("Modifier employe " + employe.getNom());
+					System.out.println("1.nom");
+				    System.out.println("2.id");
+				    System.out.println("3.taux_horaire_base");
+				    System.out.println("4.taux_horaire_supp");
+				   
+				    System.out.println("5.date_embauche");
+				    System.out.println("6.date_depart");
+				    System.out.println("7.numero NAS");
+				    
+				    int choix4 = scan.nextInt();
+				    if(choix4 == 1) {
+						System.out.println("Nom = "+ employe.getNom());
+						System.out.println("Nouveau nom:");
+						employe.setNom(scan.next());
+						System.out.println("Le nouveau nom est "+ employe.getNom());
+				    }
+				    
+				    if(choix4 == 2) {
+						System.out.println("ID = "+ employe.getId_personne());
+						System.out.println("Nouveau ID:");
+						employe.setId_personne(scan.nextInt());
+						System.out.println("Le nouvel id est "+ employe.getId_personne());
 			}
+				    if(choix4 == 3) {
+						System.out.println("taux_horaire_base = "+ employe.getTaux_horaire_base());
+						System.out.println("Nouveau taux_horaire_base:");
+						employe.setTaux_horaire_base(scan.nextInt());
+						System.out.println("Le nouvel taux_horaire_base est de "+ employe.getTaux_horaire_base());
+			}
+				    if(choix4 == 4) {
+						System.out.println("taux_horaire_supp = "+ employe.getTaux_horaire_supp());
+						System.out.println("Nouveau taux_horaire_supp:");
+						employe.setTaux_horaire_supp(scan.nextInt());
+						System.out.println("Le nouvel taux_horaire_supp est de "+ employe.getTaux_horaire_supp());
+			} 
+				    
+				    
+				    if(choix4 == 5) {
+						System.out.println("Date d'embauche ="  + employe.getDate_embauche());
+						System.out.println("Nouvelle date d'embauche: AAAA/MM/JJ");
+						String date_embauche=scan.next() ;
+						employe.setDate_embauche(date_embauche);
+						System.out.println("Le nouvelle date de début est "+ employe.getDate_embauche());
+				    
+				    
+				}
+				    
+				    if(choix4 == 6) {
+						System.out.println("Date de depart ="  + employe.getDate_depart());
+						System.out.println("Nouvelle date d'embauche: AAAA/MM/JJ");
+						String date_depart =scan.next() ;
+						employe.setDate_depart(date_depart);
+						System.out.println("Le nouvelle date de début est "+ employe.getDate_depart());
+						
+					}
+				    
+				    if(choix4 == 7) {    
+				    	System.out.println("NUMERO NAS = "+ employe.getNumero_nas());
+						System.out.println("Nouveau NAS:");
+						employe.setNumero_nas(scan.nextInt());
+						System.out.println("Le nouveau NAS est "+ employe.getNumero_nas());
+			}
+				    	
+				}
 			break;
 		case 4:
 			System.out.println("ID = "+admin.getId_personne());
