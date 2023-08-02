@@ -1,0 +1,32 @@
+[
+	{"employe":{
+		"Numero_Nas":"10200",
+		"Taux_haraire_Base":"100",
+		"Taux_horaire_supp":"150",
+		"id":"01",
+		"Date_Depart":"2023-12-31",
+		"Nom":"Georgesjjjjjjjjjj",
+		"Date_Embauche":"2020-01-01",
+		"Poste":"Employe"
+	}},
+	{"employe":{
+		"Numero_Nas":"10000",
+		"Taux_haraire_Base":"100",
+		"Taux_horaire_supp":"150",
+		"id":"02",
+		"Date_Depart":"2025-12-31",
+		"Nom":"Labelle",
+		"Date_Embauche":"2018-01-01",
+		"Poste":"Employe"
+	}},
+	{"employe":{
+		"Numero_Nas":"15050",
+		"Taux_haraire_Base":"150",
+		"Taux_horaire_supp":"200",
+		"id":"03",
+		"Date_Depart":"2027-12-31",
+		"Nom":"Moussa",
+		"Date_Embauche":"2000-01-01",
+		"Poste":"Admin"
+	}}
+]
