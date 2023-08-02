@@ -13,7 +13,7 @@ public class Employe extends Personne {
 	public void connecter_Activite(Projet p,Discipline d){
 		Date date = new Date();
 		//commentaire test
-		//enregistrer la date de début d'activité, et le projet est discipline
+		//enregistrer la date de début d'activité, et le projet et discipline
 	}
 	
 	public void terminer_Activite() {

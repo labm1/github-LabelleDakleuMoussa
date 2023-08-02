@@ -4,20 +4,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Admin extends Personne{
-	
-	private ArrayList<Employe> liste_Employes;
-	
-<<<<<<< HEAD
-	public Admin(String nom, int id_personne, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
-			String date_depart, int numero_nas) {
-		super(nom, id_personne, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
-=======
+
 	public Admin(String nom, int id_personne,String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
 			Date date_depart, int numero_nas) {
-		super(nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
->>>>>>> 57004960d13b2de275e9d3542dcb464683a0d705
-		this.liste_Employes = new ArrayList<>();
-	
+		super(nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);	
 	}
 	
 	public void ajouter_Projet(String nom,int id,double heuresDesign1, double heuresDesign2, 
@@ -64,5 +54,9 @@ public class Admin extends Personne{
 		}
 		p.ajouter_Employe(e);
 		System.out.println("Employé "+ e.getNom() + " a été ajouté au projet "+ p.getNom_Projet());
+	}
+	
+	public void rapport_Salaire() {
+		
 	}
 }
