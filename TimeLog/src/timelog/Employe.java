@@ -16,8 +16,9 @@ public class Employe extends Personne {
 		//enregistrer la date de début d'activité, et le projet et discipline
 	}
 	
-	public void terminer_Activite() {
+	public void terminer_Activite(Compagnie c) {
 		Date date = new Date();
+		c.sauvegarder_date_fin(date, this);
 		//enregistrer la date de fin d'activité, proche de la date de début d'activité
 	}
 	

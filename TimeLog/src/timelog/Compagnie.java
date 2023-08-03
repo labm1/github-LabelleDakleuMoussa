@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,8 +96,8 @@ public class Compagnie {
 		return null;
 	}
 	
-	public int trouverTempsEnHeures(Date debut, Date fin) {
-		return (int)(debut.getTime()-fin.getTime())/(1000*60);
+	public double trouverTempsEnHeures(Date debut, Date fin) {
+		return (double)(debut.getTime()-fin.getTime())/(1000.0*60);
 	}
 	
 	public void sauvegarder_Personnes() {
@@ -129,7 +130,6 @@ public class Compagnie {
 		 try (FileWriter fileWriter = new FileWriter("test.json")) {
 	            fileWriter.write(dataPersonnes.toString(4));
 	            fileWriter.flush();
-	            System.out.println("Données ajoutées au fichier JSON avec succès.");
 	        } catch (IOException e) {
 	            System.err.println("Erreur lors de l'écriture dans le fichier JSON : " + e.getMessage());
 	        }
@@ -194,14 +194,12 @@ public class Compagnie {
 		         jsonArray = new JSONArray(jsonData.toString());
 			     for (int i = 0; i < jsonArray.length(); i++) {
 			    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
-			    	 if (jsonObject.get("employe").equals(e.getNom())&& jsonObject.get("fin").equals("null")) {
+			    	 if (jsonObject.get("employe").equals(e.getNom())&& jsonObject.get("date_fin").equals("null")) {
 			    		 System.out.println("Veuillez finir l'activité commencée avant d'en faire une autre");
 			    		 return;
 			    	 }
 			    }
-	        } catch (IOException e1) {
-				e1.printStackTrace();
-			}catch (Exception e1) {
+	        }catch (Exception e1) {
 				jsonArray = new JSONArray();
 			}
 	  try (FileWriter fileWriter = new FileWriter("dates.json")) {
@@ -216,16 +214,46 @@ public class Compagnie {
 	    
 	    
 	    // Écrire les données JSON dans le fichier
-	        fileWriter.write(jsonObject.toString(4));
+	        fileWriter.write(jsonArray.toString(4));
 	        fileWriter.flush();
 	    } catch (IOException exception) {
 	        System.err.println("Erreur lors de l'enregistrement ou la lecture des données d'activité : " + exception.getMessage());
 	    }
 	}
 	
-	public void lire_Personnes(){
-		 
-		try {
+	public void sauvegarder_date_fin(Date date,Employe e) {
+	    //1. lire le fichier json et trouver les activités de l'employé
+	 	//2. vérifier l'activité qu'il a commencer et la terminer
+	 	//3. si activité pas commencé message d'erreur
+		
+	        // Lire le contenu du fichier JSON en tant que chaîne
+		JSONArray jsonArray = null;
+			try {
+				String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+			
+		         jsonArray = new JSONArray(jsonData.toString());
+			     for (int i = 0; i < jsonArray.length(); i++) {
+			    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+			    	 if (jsonObject.get("employe").equals(e.getNom())&& jsonObject.get("date_fin").equals("null")) {
+			    		 jsonObject.put("date_fin", date);
+			    		 break;
+			    	 }
+			    }
+	        } catch (IOException e1) {
+				e1.printStackTrace();
+			}catch (Exception e1) {
+				jsonArray = new JSONArray();
+			}
+	  try (FileWriter fileWriter = new FileWriter("dates.json")) {
+		  // Écrire les données JSON dans le fichier
+	        fileWriter.write(jsonArray.toString(4));
+	        fileWriter.flush();
+	    } catch (IOException exception) {
+	        System.err.println("Erreur lors de l'enregistrement ou la lecture des données d'activité : " + exception.getMessage());
+	    }
+	}
+	
+	public void lire_Personnes() throws NoSuchFileException, IOException{
             String jsonData = new String(Files.readAllBytes(Paths.get("test.json")));
 
             JSONArray jsonArray = new JSONArray(jsonData.toString());
@@ -253,16 +281,10 @@ public class Compagnie {
 	            }
        
            }
-		  }
-		  catch (FileNotFoundException e) {
-		            e.printStackTrace();
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
+
 	}
 	
-	public void lire_Projets() {
-		try {
+	public void lire_Projets() throws NoSuchFileException, IOException{
 			String jsonData = new String(Files.readAllBytes(Paths.get("projets.json")));
 
             JSONArray jsonArray = new JSONArray(jsonData.toString());
@@ -303,9 +325,6 @@ public class Compagnie {
                 Projet projet = new Projet(nom_Projet,id,listeEmployes,listeDisciplines,nbre_Heures_Budgetes_Projet,debut,fin);
                 this.liste_Projets.add(projet);
             }
-        } catch (IOException e) {
-            System.err.println("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
-        }
 	
 	}
 	
@@ -322,28 +341,31 @@ public class Compagnie {
 
 	public static void main(String[] args) {
 		boolean deconnecter = true;
-		Date d = new Date();
-		
-		
-		Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
-		Projet pro2 = new Projet("Projet2",1,10,10,10,10,10,d,d);
-		Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
-		Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
-		Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
 		Compagnie c = new Compagnie();
-		
-		//c.setAdmin(a);
-		//c.ajouterProjet(pro);
-		//c.ajouterProjet(pro2);
-		//c.ajouter_Employe(e);
-		//pro.ajouter_Employe(e);
-		//c.ajouter_Employe(e2);
-		//pro.ajouter_Employe(e2);
-		//c.sauvegarder_Personnes();
-		//c.sauvegarder_Projets();
-		
-		c.lire_Personnes();
-		c.lire_Projets();
+
+		try {
+			c.lire_Personnes();
+			c.lire_Projets();
+		}catch(NoSuchFileException e1) {
+			Date d = new Date();
+			Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
+			Projet pro2 = new Projet("Projet2",1,10,10,10,10,10,d,d);
+			Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
+			Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
+			Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
+			
+			c.setAdmin(a);
+			c.ajouterProjet(pro);
+			c.ajouterProjet(pro2);
+			c.ajouter_Employe(e);
+			pro.ajouter_Employe(e);
+			c.ajouter_Employe(e2);
+			pro.ajouter_Employe(e2);
+			c.sauvegarder_Personnes();
+			c.sauvegarder_Projets();
+        } catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		int essais = 0,id;
 		String user;
@@ -367,16 +389,16 @@ public class Compagnie {
 		} while(deconnecter && essais<3);
 		
 		while(!deconnecter) {
-			if (p.getNom().equals(a.getNom()))
+			if (p.getNom().equals(c.getAdmin().getNom()))
 				deconnecter = c.menuAdmin((Admin)p,c);
 			else
-				deconnecter = c.menuEmploye((Employe)p,c);
+				deconnecter = c.menuEmploye((Employe)p);
 		}
 	}
 	
 	
 	
-	public boolean menuEmploye(Employe e, Compagnie c) {
+	public boolean menuEmploye(Employe e) {
 		System.out.println("\n\nBienvenue "+e.getNom());
 		System.out.println("Menu Employé");
 		System.out.println("1. Début d'activité");
@@ -392,23 +414,23 @@ public class Compagnie {
 		case 1:
 			System.out.println("Début d'activité sur le projet:");
 			int j = 1;
-			for(int i = 0; i<c.getListeProjets().size();i++) {
-				Projet p = c.getListeProjets().get(i);
+			for(int i = 0; i<this.getListeProjets().size();i++) {
+				Projet p = this.getListeProjets().get(i);
 				if(p.getListe_Employes().contains(e)) {
 				System.out.println(j+". "+p.getNom_Projet());
 				}
 			}
-			Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+			Projet projet = this.getListeProjets().get(scan.nextInt()-1);
 			
 			System.out.println("Début d'activité sur la discipline du projet "+projet.getNom_Projet()+":");
 			for(int i = 1; i<=projet.getListe_Disciplines().size();i++) {
 				System.out.println(i+". "+projet.getListe_Disciplines().get(i-1).getNom_Discipline());
 			}
-			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1),c);
+			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1),this);
 			break;
 		case 2:
 			System.out.println("Fin d'activité");
-			e.terminer_Activite();
+			e.terminer_Activite(this);
 			break;
 		case 3:
 			System.out.println("Talon de paye");
@@ -443,12 +465,12 @@ public class Compagnie {
 			System.out.println("Rapport de progression");
 			System.out.println("Indiquez quel type de rapport vous voulez:");
 			System.out.println("1. Rapport global");
-			for(int i = 2; i<=c.getListeProjets().size()+1;i++) {
-				System.out.println(i+". Rapport du projet "+c.getListeProjets().get(i-2).getNom_Projet());
+			for(int i = 2; i<=this.getListeProjets().size()+1;i++) {
+				System.out.println(i+". Rapport du projet "+this.getListeProjets().get(i-2).getNom_Projet());
 			}
 			int choix2 = scan.nextInt();
 			if(choix2 > 1) {
-				projet = c.getListeProjets().get(choix2-2);
+				projet = this.getListeProjets().get(choix2-2);
 				e.rapport_Etat_Projet(projet);
 			} else {
 				e.rapport_Total_Projet();
