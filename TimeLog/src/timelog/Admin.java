@@ -1,11 +1,10 @@
 package timelog;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Admin extends Personne{
 
-	public Admin(String nom, int id_personne,String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
+	public Admin(String nom, int id_personne,String poste, double taux_horaire_base, double taux_horaire_supp, Date date_embauche,
 			Date date_depart, int numero_nas) {
 		super(nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);	
 	}
@@ -40,6 +39,7 @@ public class Admin extends Personne{
 		calendrier.set(Integer.parseInt(date_depart.substring(0, 4)), Integer.parseInt(date_depart.substring(5, 7)), Integer.parseInt(date_depart.substring(8)));
 		Date depart = calendrier.getTime();
 		c.ajouter_Employe(new Employe (nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, embauche, depart ,numero_nas ));
+		c.sauvegarder_Employes();
 
 	}
 	public void assigner_Projet(Employe e, Projet p, Compagnie c) {

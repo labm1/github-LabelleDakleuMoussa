@@ -1,8 +1,25 @@
 package timelog;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
+import java.util.TimeZone;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Compagnie {
 	static Scanner scan = new Scanner(System.in);
@@ -88,6 +105,117 @@ public class Compagnie {
 		return (int)(debut.getTime()-fin.getTime())/(1000*60);
 	}
 	
+	public void sauvegarder_Employes() {
+		JSONArray DataEmployes = new JSONArray();
+		for(Employe e : this.liste_Employes) {
+			JSONObject DataEmploye = new JSONObject();
+			DataEmploye.put("nom", e.getNom());
+			DataEmploye.put("id", e.getId_personne());
+			DataEmploye.put("poste", e.getPoste());
+			DataEmploye.put("taux_horaire_supp", e.getTaux_horaire_supp());
+			DataEmploye.put("taux_horaire_base", e.getTaux_horaire_base());
+			DataEmploye.put("numero_nas", e.getNumero_nas());
+			DataEmploye.put("date_embauche", e.getDate_embauche());
+			DataEmploye.put("date_depart", e.getDate_depart());
+			DataEmployes.put(DataEmploye);
+		}
+		
+		 try (FileWriter fileWriter = new FileWriter("test.json")) {
+	            fileWriter.write(DataEmployes.toString(4));
+	            fileWriter.flush();
+	            System.out.println("Données ajoutées au fichier JSON avec succès.");
+	        } catch (IOException e) {
+	            System.err.println("Erreur lors de l'écriture dans le fichier JSON : " + e.getMessage());
+	        }
+	}
+	
+	public void sauvegarder_Projets() {
+		JSONArray dataProjets = new JSONArray();
+		for(Projet p : this.listeProjets) {
+			JSONObject dataProjet = new JSONObject();
+			JSONArray dataDisciplines = new JSONArray();
+			JSONArray dataEmployes = new JSONArray();
+			dataProjet.put("nom_Projet", p.getNom_Projet());
+			dataProjet.put("id", p.getId());
+			dataProjet.put("nbre_Heures_Budgetes_Projet", p.getNbre_Heures_Budgetes());
+			dataProjet.put("date_Debut", p.getDate_Debut());
+			dataProjet.put("date_Fin", p.getDate_Fin());
+			for (Employe e : p.getListe_Employes()) {
+				JSONObject dataEmploye = new JSONObject();
+				dataEmploye.put("nom_Employe", e.getNom());
+				dataEmployes.put(dataEmploye);
+			}
+			for (Discipline d : p.getListe_Disciplines()) {
+				JSONObject dataDiscipline = new JSONObject();
+				dataDiscipline.put("nom_Discipline", d.getNom_Discipline());
+				dataDiscipline.put("nbre_Heures_budgetes_Discipline", d.getNbre_Heures_budgetes());
+				dataDisciplines.put(dataDiscipline);
+			}
+			JSONArray dataProjetAuComplet = new JSONArray();
+			dataProjetAuComplet.put(dataProjet);
+			dataProjetAuComplet.put(dataEmployes);
+			dataProjetAuComplet.put(dataDisciplines);
+			dataProjets.put(dataProjetAuComplet);
+		}
+		
+		 try (FileWriter fileWriter = new FileWriter("projets.json")) {
+	            fileWriter.write(dataProjets.toString(4));
+	            fileWriter.flush();
+	            System.out.println("Données ajoutées au fichier JSON avec succès.");
+	        } catch (IOException e) {
+	            System.err.println("Erreur lors de l'écriture dans le fichier JSON : " + e.getMessage());
+	        }
+	}
+	
+	public void lire_Employes(){
+		 
+		try (FileReader fileReader = new FileReader("test.json")) {
+            StringBuilder jsonData = new StringBuilder();
+            int character;
+            while ((character = fileReader.read()) != -1) {
+                jsonData.append((char) character);
+            }
+
+            JSONArray jsonArray = new JSONArray(jsonData.toString());
+		     for (int i = 0; i < jsonArray.length(); i++) {
+		    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+               // Extraire les données pour créer un nouvel objet Employe
+               String nom = (String) jsonObject.get("nom");
+               int id_personne = Integer.parseInt(jsonObject.get("id").toString());
+               String poste = (String) jsonObject.get("poste");
+               double taux_horaire_supp = Double.parseDouble(jsonObject.get("taux_horaire_supp").toString());
+               double taux_horaire_base = Double.parseDouble(jsonObject.get("taux_horaire_base").toString());
+               int numero_nas = Integer.parseInt(jsonObject.get("numero_nas").toString());
+               String date_embauche = (String) jsonObject.get("date_embauche");
+               String date_depart = (String) jsonObject.get("date_depart");
+
+               // Créer un nouvel objet Employe avec les données extraites
+               Date embauche = StringToDate(date_embauche);
+               Date depart = StringToDate(date_depart);
+               
+				Employe employe = new Employe(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas);
+	            liste_Employes.add(employe);
+              
+           }
+		  }
+		  catch (FileNotFoundException e) {
+		            e.printStackTrace();
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		 }
+	
+		public Date StringToDate(String dateString) {
+			 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+		        try {
+		            return sdf.parse(dateString);
+		        } catch (ParseException e) {
+		            e.printStackTrace();
+		            return null;
+		        }
+		}
+	
 
 	public static void main(String[] args) {
 		boolean deconnecter = true;
@@ -96,18 +224,20 @@ public class Compagnie {
 		
 		Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
 		Projet pro2 = new Projet("Projet2",1,10,10,10,10,10,d,d);
-		Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
-		Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
+		//Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
+		//Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
 		Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
 		Compagnie c = new Compagnie(a);
 		
 		c.ajouterProjet(pro);
 		c.ajouterProjet(pro2);
-		c.ajouter_Employe(e);
-		pro.ajouter_Employe(e);
-		c.ajouter_Employe(e2);
-		pro.ajouter_Employe(e2);
-		
+		//c.ajouter_Employe(e);
+		//pro.ajouter_Employe(e);
+		//c.ajouter_Employe(e2);
+		//pro.ajouter_Employe(e2);
+		//c.sauvegarder_Employes();
+		//c.sauvegarder_Projets();
+		c.lire_Employes();
 		
 		int essais = 0,id;
 		String user;

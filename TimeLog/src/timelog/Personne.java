@@ -11,9 +11,9 @@ public class Personne {
 	
 	private String poste;
 	
-	private int taux_horaire_base;
+	private double taux_horaire_base;
 	
-	private int taux_horaire_supp;
+	private double taux_horaire_supp;
 	
 	private Date date_embauche;
 	
@@ -22,7 +22,7 @@ public class Personne {
 	private int numero_nas;
 	
 	
-	public Personne(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, Date date_embauche,
+	public Personne(String nom, int id_personne, String poste, double taux_horaire_base, double taux_horaire_supp, Date date_embauche,
 			Date date_depart, int numero_nas) {
 		this.nom = nom;
 		this.id_personne = id_personne;
@@ -53,19 +53,19 @@ public class Personne {
 		this.id_personne = id_personne;
 	}
 	
-	public int getTaux_horaire_base() {
+	public double getTaux_horaire_base() {
 		return taux_horaire_base;
 	}
 	
-	public void setTaux_horaire_base(int taux_horaire_base) {
+	public void setTaux_horaire_base(double taux_horaire_base) {
 		this.taux_horaire_base = taux_horaire_base;
 	}
 	
-	public int getTaux_horaire_supp() {
+	public double getTaux_horaire_supp() {
 		return taux_horaire_supp;
 	}
 	
-	public void setTaux_horaire_supp(int taux_horaire_supp) {
+	public void setTaux_horaire_supp(double taux_horaire_supp) {
 		this.taux_horaire_supp = taux_horaire_supp;
 	}
 	
