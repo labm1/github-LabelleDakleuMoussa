@@ -33,6 +33,20 @@ public class Projet {
 		this.liste_Disciplines.add(new Discipline("Déploiement", heuresDeploiement));
 	}
 	
+	public Projet(String nom,int id,ArrayList<Employe> liste_Employes,ArrayList<Discipline> liste_Discipline,double nbre_Heures_Budgetes,Date debut, Date fin) {
+		
+		this.nbre_Heures_Budgetes = nbre_Heures_Budgetes;
+	
+		
+		this.nom_Projet = nom;
+		this.id = id;
+		this.date_Debut = debut;
+		this.date_Fin = fin;
+		
+		this.liste_Employes = liste_Employes;
+		this.liste_Disciplines = liste_Discipline;
+	}
+	
 	public void ajouter_Employe(Employe p) {
 		this.liste_Employes.add(p);
 	}

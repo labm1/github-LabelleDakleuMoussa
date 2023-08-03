@@ -4,19 +4,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,13 +20,12 @@ public class Compagnie {
 	static Scanner scan = new Scanner(System.in);
 	private ArrayList<Employe> liste_Employes;
 	private Admin admin;
-	private ArrayList<Projet> listeProjets;
+	private ArrayList<Projet> liste_Projets;
 	private int npe;
 	
-	public Compagnie(Admin a) {
+	public Compagnie() {
 		liste_Employes = new ArrayList<>();
-		listeProjets = new ArrayList<>();
-		admin = a;
+		liste_Projets = new ArrayList<>();
 		npe = 2;
 	}
 	
@@ -44,11 +38,11 @@ public class Compagnie {
 	}
 
 	public ArrayList<Projet> getListeProjets() {
-		return listeProjets;
+		return liste_Projets;
 	}
 
 	public void setListeProjets(ArrayList<Projet> listeProjets) {
-		this.listeProjets = listeProjets;
+		this.liste_Projets = listeProjets;
 	}
 
 	public void ajouter_Employe(Employe e){
@@ -76,11 +70,11 @@ public class Compagnie {
 	}
 
 	public void ajouterProjet(Projet p){
-		listeProjets.add(p);
+		liste_Projets.add(p);
 	}
 	
 	public void supprimerProjet(Projet p){
-		listeProjets.remove(p);
+		liste_Projets.remove(p);
 	}
 	
 	public Personne trouverPersonne(String nom) {
@@ -94,7 +88,7 @@ public class Compagnie {
 	}
 	
 	public Projet trouverProjet(String nom) {
-		for (Projet p : listeProjets) {
+		for (Projet p : liste_Projets) {
 			if(p.getNom_Projet().equals(nom))
 				return p;
 		}
@@ -105,23 +99,35 @@ public class Compagnie {
 		return (int)(debut.getTime()-fin.getTime())/(1000*60);
 	}
 	
-	public void sauvegarder_Employes() {
-		JSONArray DataEmployes = new JSONArray();
+	public void sauvegarder_Personnes() {
+		JSONArray dataPersonnes = new JSONArray();
+		
 		for(Employe e : this.liste_Employes) {
-			JSONObject DataEmploye = new JSONObject();
-			DataEmploye.put("nom", e.getNom());
-			DataEmploye.put("id", e.getId_personne());
-			DataEmploye.put("poste", e.getPoste());
-			DataEmploye.put("taux_horaire_supp", e.getTaux_horaire_supp());
-			DataEmploye.put("taux_horaire_base", e.getTaux_horaire_base());
-			DataEmploye.put("numero_nas", e.getNumero_nas());
-			DataEmploye.put("date_embauche", e.getDate_embauche());
-			DataEmploye.put("date_depart", e.getDate_depart());
-			DataEmployes.put(DataEmploye);
+			JSONObject dataPersonne = new JSONObject();
+			dataPersonne.put("nom", e.getNom());
+			dataPersonne.put("id", e.getId_personne());
+			dataPersonne.put("poste", e.getPoste());
+			dataPersonne.put("taux_horaire_supp", e.getTaux_horaire_supp());
+			dataPersonne.put("taux_horaire_base", e.getTaux_horaire_base());
+			dataPersonne.put("numero_nas", e.getNumero_nas());
+			dataPersonne.put("date_embauche", e.getDate_embauche());
+			dataPersonne.put("date_depart", e.getDate_depart());
+			dataPersonnes.put(dataPersonne);
 		}
+		JSONObject dataAdmin = new JSONObject();
+		dataAdmin.put("nom", admin.getNom());
+		dataAdmin.put("id", admin.getId_personne());
+		dataAdmin.put("poste", admin.getPoste());
+		dataAdmin.put("taux_horaire_supp", admin.getTaux_horaire_supp());
+		dataAdmin.put("taux_horaire_base", admin.getTaux_horaire_base());
+		dataAdmin.put("numero_nas", admin.getNumero_nas());
+		dataAdmin.put("date_embauche", admin.getDate_embauche());
+		dataAdmin.put("date_depart", admin.getDate_depart());
+		dataPersonnes.put(dataAdmin);
+		
 		
 		 try (FileWriter fileWriter = new FileWriter("test.json")) {
-	            fileWriter.write(DataEmployes.toString(4));
+	            fileWriter.write(dataPersonnes.toString(4));
 	            fileWriter.flush();
 	            System.out.println("Données ajoutées au fichier JSON avec succès.");
 	        } catch (IOException e) {
@@ -131,7 +137,7 @@ public class Compagnie {
 	
 	public void sauvegarder_Projets() {
 		JSONArray dataProjets = new JSONArray();
-		for(Projet p : this.listeProjets) {
+		for(Projet p : this.liste_Projets) {
 			JSONObject dataProjet = new JSONObject();
 			JSONArray dataDisciplines = new JSONArray();
 			JSONArray dataEmployes = new JSONArray();
@@ -155,8 +161,15 @@ public class Compagnie {
 			dataProjetAuComplet.put(dataProjet);
 			dataProjetAuComplet.put(dataEmployes);
 			dataProjetAuComplet.put(dataDisciplines);
+			
+
+			
 			dataProjets.put(dataProjetAuComplet);
+			
 		}
+		JSONObject dataNPE = new JSONObject();
+		dataNPE.put("npe", this.npe);
+		dataProjets.put(dataNPE);
 		
 		 try (FileWriter fileWriter = new FileWriter("projets.json")) {
 	            fileWriter.write(dataProjets.toString(4));
@@ -167,14 +180,53 @@ public class Compagnie {
 	        }
 	}
 	
-	public void lire_Employes(){
+	public void sauvegarder_date_debut(Date date, Projet p, Discipline d, Employe e) {
+	    //1. lire le fichier json et trouver les activités de l'employé
+	 	//2. vérifier s'il a terminé toute ses activités
+	 	//2.1 sinon, erreur pour commencer activité
+	 	//3. ajouter le nouvel objet de début d'activité
+		
+	        // Lire le contenu du fichier JSON en tant que chaîne
+		JSONArray jsonArray = null;
+			try {
+				String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+			
+		         jsonArray = new JSONArray(jsonData.toString());
+			     for (int i = 0; i < jsonArray.length(); i++) {
+			    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+			    	 if (jsonObject.get("employe").equals(e.getNom())&& jsonObject.get("fin").equals("null")) {
+			    		 System.out.println("Veuillez finir l'activité commencée avant d'en faire une autre");
+			    		 return;
+			    	 }
+			    }
+	        } catch (IOException e1) {
+				e1.printStackTrace();
+			}catch (Exception e1) {
+				jsonArray = new JSONArray();
+			}
+	  try (FileWriter fileWriter = new FileWriter("dates.json")) {
+	    JSONObject jsonObject = new JSONObject();
+	    jsonObject.put("projet", p.getNom_Projet());
+	    jsonObject.put("discipline", d.getNom_Discipline());
+	    jsonObject.put("employe", e.getNom());
+	    jsonObject.put("date_debut", date);
+	    jsonObject.put("date_fin", "null");
+	    
+	    jsonArray.put(jsonObject);
+	    
+	    
+	    // Écrire les données JSON dans le fichier
+	        fileWriter.write(jsonObject.toString(4));
+	        fileWriter.flush();
+	    } catch (IOException exception) {
+	        System.err.println("Erreur lors de l'enregistrement ou la lecture des données d'activité : " + exception.getMessage());
+	    }
+	}
+	
+	public void lire_Personnes(){
 		 
-		try (FileReader fileReader = new FileReader("test.json")) {
-            StringBuilder jsonData = new StringBuilder();
-            int character;
-            while ((character = fileReader.read()) != -1) {
-                jsonData.append((char) character);
-            }
+		try {
+            String jsonData = new String(Files.readAllBytes(Paths.get("test.json")));
 
             JSONArray jsonArray = new JSONArray(jsonData.toString());
 		     for (int i = 0; i < jsonArray.length(); i++) {
@@ -193,10 +245,13 @@ public class Compagnie {
                // Créer un nouvel objet Employe avec les données extraites
                Date embauche = StringToDate(date_embauche);
                Date depart = StringToDate(date_depart);
-               
-				Employe employe = new Employe(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas);
-	            liste_Employes.add(employe);
-              
+               if(i == jsonArray.length()-1)
+            	   setAdmin(new Admin(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas));
+               else {
+            	   Employe employe = new Employe(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas);
+		           liste_Employes.add(employe);
+	            }
+       
            }
 		  }
 		  catch (FileNotFoundException e) {
@@ -204,17 +259,65 @@ public class Compagnie {
 		        } catch (IOException e) {
 		            e.printStackTrace();
 		        }
-		 }
+	}
 	
-		public Date StringToDate(String dateString) {
-			 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-		        try {
-		            return sdf.parse(dateString);
-		        } catch (ParseException e) {
-		            e.printStackTrace();
-		            return null;
-		        }
-		}
+	public void lire_Projets() {
+		try {
+			String jsonData = new String(Files.readAllBytes(Paths.get("projets.json")));
+
+            JSONArray jsonArray = new JSONArray(jsonData.toString());
+            for (int i = 0; i < jsonArray.length(); i++) {
+                if(i == jsonArray.length()-1) {
+                	JSONObject data = jsonArray.getJSONObject(i);
+                	this.npe = data.getInt("npe");
+                	break;
+                }
+                
+                JSONArray dataProjetAuComplet = jsonArray.getJSONArray(i);
+                JSONObject dataProjet = dataProjetAuComplet.getJSONObject(0);
+                JSONArray dataEmployes = dataProjetAuComplet.getJSONArray(1);
+                JSONArray dataDisciplines = dataProjetAuComplet.getJSONArray(2);
+
+                
+                String nom_Projet = dataProjet.getString("nom_Projet");
+                int id = dataProjet.getInt("id");
+                double nbre_Heures_Budgetes_Projet = dataProjet.getDouble("nbre_Heures_Budgetes_Projet");
+                Date debut = StringToDate(dataProjet.getString("date_Debut"));
+                Date fin = StringToDate(dataProjet.getString("date_Fin"));
+                
+
+                ArrayList<Employe> listeEmployes = new ArrayList<>();
+                for (int j = 0; j < dataEmployes.length(); j++) {
+                    JSONObject dataEmploye = dataEmployes.getJSONObject(j);
+                    Employe employe = (Employe) trouverPersonne(dataEmploye.getString("nom_Employe"));
+                    listeEmployes.add(employe);
+                }
+
+                ArrayList<Discipline> listeDisciplines = new ArrayList<>();
+                for (int j = 0; j < dataDisciplines.length(); j++) {
+                    JSONObject dataDiscipline = dataDisciplines.getJSONObject(j);
+                    Discipline discipline = new Discipline(dataDiscipline.getString("nom_Discipline"),dataDiscipline.getInt("nbre_Heures_budgetes_Discipline"));
+                    listeDisciplines.add(discipline);
+                }
+
+                Projet projet = new Projet(nom_Projet,id,listeEmployes,listeDisciplines,nbre_Heures_Budgetes_Projet,debut,fin);
+                this.liste_Projets.add(projet);
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier JSON : " + e.getMessage());
+        }
+	
+	}
+	
+	public Date StringToDate(String dateString) {
+		 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+	        try {
+	            return sdf.parse(dateString);
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	}
 	
 
 	public static void main(String[] args) {
@@ -224,20 +327,23 @@ public class Compagnie {
 		
 		Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
 		Projet pro2 = new Projet("Projet2",1,10,10,10,10,10,d,d);
-		//Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
-		//Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
+		Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
+		Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
 		Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
-		Compagnie c = new Compagnie(a);
+		Compagnie c = new Compagnie();
 		
-		c.ajouterProjet(pro);
-		c.ajouterProjet(pro2);
+		//c.setAdmin(a);
+		//c.ajouterProjet(pro);
+		//c.ajouterProjet(pro2);
 		//c.ajouter_Employe(e);
 		//pro.ajouter_Employe(e);
 		//c.ajouter_Employe(e2);
 		//pro.ajouter_Employe(e2);
-		//c.sauvegarder_Employes();
+		//c.sauvegarder_Personnes();
 		//c.sauvegarder_Projets();
-		c.lire_Employes();
+		
+		c.lire_Personnes();
+		c.lire_Projets();
 		
 		int essais = 0,id;
 		String user;
@@ -298,7 +404,7 @@ public class Compagnie {
 			for(int i = 1; i<=projet.getListe_Disciplines().size();i++) {
 				System.out.println(i+". "+projet.getListe_Disciplines().get(i-1).getNom_Discipline());
 			}
-			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1));
+			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1),c);
 			break;
 		case 2:
 			System.out.println("Fin d'activité");

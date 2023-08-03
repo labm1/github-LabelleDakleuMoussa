@@ -10,9 +10,9 @@ public class Employe extends Personne {
 	}
 		// TODO Auto-generated constructor stub
 	
-	public void connecter_Activite(Projet p,Discipline d){
+	public void connecter_Activite(Projet p,Discipline d, Compagnie c){
 		Date date = new Date();
-		//commentaire test
+		c.sauvegarder_date_debut(date, p, d, this);
 		//enregistrer la date de début d'activité, et le projet et discipline
 	}
 	
