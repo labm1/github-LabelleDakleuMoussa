@@ -55,6 +55,14 @@ public class Projet {
 		this.liste_Employes.remove(p);
 	}
 	
+	public Discipline trouver_Discipline(String nom) {
+		for(Discipline d:liste_Disciplines) {
+			if(d.getNom_Discipline().equals(nom))
+				return d;
+		}
+		return null;
+	}
+	
 	public double getNbre_Heures_Budgetes() {
 		return nbre_Heures_Budgetes;
 	}

@@ -1,7 +1,5 @@
 package timelog;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +8,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
@@ -97,7 +96,7 @@ public class Compagnie {
 	}
 	
 	public double trouverTempsEnHeures(Date debut, Date fin) {
-		return (double)(debut.getTime()-fin.getTime())/(1000.0*60);
+		return (double)(fin.getTime()-debut.getTime())/(1000.0*3600);
 	}
 	
 	public void sauvegarder_Personnes() {
@@ -209,6 +208,13 @@ public class Compagnie {
 	    jsonObject.put("employe", e.getNom());
 	    jsonObject.put("date_debut", date);
 	    jsonObject.put("date_fin", "null");
+	    jsonObject.put("heures", 0);
+	    
+	    if(Calendar.HOUR_OF_DAY > 16 || Calendar.HOUR_OF_DAY < 7 || Calendar.DAY_OF_WEEK == 1 || Calendar.DAY_OF_WEEK == 7) {
+	    	 jsonObject.put("type", "supp");
+	    }else {
+	    	jsonObject.put("type", "base");
+	    }
 	    
 	    jsonArray.put(jsonObject);
 	    
@@ -235,7 +241,9 @@ public class Compagnie {
 			     for (int i = 0; i < jsonArray.length(); i++) {
 			    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
 			    	 if (jsonObject.get("employe").equals(e.getNom())&& jsonObject.get("date_fin").equals("null")) {
+			    		 String debut = jsonObject.getString("date_debut");
 			    		 jsonObject.put("date_fin", date);
+			    		 jsonObject.put("heures", trouverTempsEnHeures(StringToDate(debut), date));
 			    		 break;
 			    	 }
 			    }
@@ -328,6 +336,214 @@ public class Compagnie {
 	
 	}
 	
+	public double lire_Heures_Travaillees_Base(String employe, Date dateMinimum) throws IOException {
+		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+
+		double heures = 0;
+		
+        JSONArray jsonArray = new JSONArray(jsonData.toString());
+	     for (int i = 0; i < jsonArray.length(); i++) {
+	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+           String nom = (String) jsonObject.get("employe");
+           String date_debut = (String) jsonObject.get("date_debut");
+           String date_fin = (String) jsonObject.get("date_fin");
+           Date debut = StringToDate(date_debut);
+           
+          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && jsonObject.get("type").equals("base")) {
+        	  heures += jsonObject.getDouble("heures");
+          }
+       }
+	     return heures;
+	}
+	
+	public double lire_Heures_Travaillees_Supp(String employe, Date dateMinimum) throws IOException {
+		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+
+		double heures = 0;
+		
+        JSONArray jsonArray = new JSONArray(jsonData.toString());
+	     for (int i = 0; i < jsonArray.length(); i++) {
+	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+           String nom = (String) jsonObject.get("employe");
+           String date_debut = (String) jsonObject.get("date_debut");
+           String date_fin = (String) jsonObject.get("date_fin");
+           Date debut = StringToDate(date_debut);
+           
+          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && jsonObject.get("type").equals("supp")) {
+        	  heures += jsonObject.getDouble("heures");
+          }
+       }
+	     return heures;
+	}
+	
+	public double lire_Heures_Travaillees(String projet) throws IOException {
+		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+
+		double heures = 0;
+		
+        JSONArray jsonArray = new JSONArray(jsonData.toString());
+	     for (int i = 0; i < jsonArray.length(); i++) {
+	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+           String nomProjet = (String) jsonObject.get("projet");
+           String date_debut = (String) jsonObject.get("date_debut");
+           String date_fin = (String) jsonObject.get("date_fin");
+           Date debut = StringToDate(date_debut);
+           
+          if(nomProjet.equals(projet) && !date_fin.equals("null")) {
+        	  heures += jsonObject.getDouble("heures");
+          }
+       }
+	     return heures;
+	}
+	
+	public double lire_Heures_Travaillees(String projet, String discipline) throws IOException {
+		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+
+		double heures = 0;
+		
+        JSONArray jsonArray = new JSONArray(jsonData.toString());
+	     for (int i = 0; i < jsonArray.length(); i++) {
+	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+           String nomProjet = (String) jsonObject.get("projet");
+           String nomDiscipline = (String) jsonObject.get("discipline");
+           String date_debut = (String) jsonObject.get("date_debut");
+           String date_fin = (String) jsonObject.get("date_fin");
+           Date debut = StringToDate(date_debut);
+           
+          if(nomProjet.equals(projet) && nomDiscipline.equals(discipline) && !date_fin.equals("null")) {
+        	  heures += jsonObject.getDouble("heures");
+          }
+       }
+	     return heures;
+	}
+	
+	
+	
+	public void initialisation() {
+		JSONArray jsonArray = null;
+		try {
+			String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+		
+	         jsonArray = new JSONArray(jsonData.toString());
+        }catch (Exception e1) {
+			jsonArray = new JSONArray();
+		}
+		
+		Date d = new Date();
+		Projet projet1 = new Projet("projet1",1,10,10,10,10,10,d,d);
+		Projet projet2 = new Projet("projet2",1,10,10,10,10,10,d,d);
+		Projet projet3 = new Projet("projet3",1,10,10,10,10,10,d,d);
+		
+		
+		Employe employe1 = new Employe("employe1",1,"Développeur sénior",15,17,d,d,123456789);
+		Employe employe2 = new Employe("employe2",2,"Développeur junior",15,17,d,d,123456789);
+		Employe employe3 = new Employe("employe3",3,"Développeur junior",15,17,d,d,123456789);
+			
+		Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
+		
+  try (FileWriter fileWriter = new FileWriter("dates.json")) {
+    
+    for(int i = 0; i<14;i++) {
+    	for(int j = 0; j<projet1.getListe_Disciplines().size();j++) {
+		    Calendar calendrier = Calendar.getInstance();
+		    calendrier.add(Calendar.DAY_OF_MONTH, -i);
+			JSONObject jsonObject1 = new JSONObject();			
+			
+		    jsonObject1.put("projet", projet1.getNom_Projet());
+		    jsonObject1.put("discipline", projet1.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject1.put("employe", employe1.getNom());
+		    jsonObject1.put("date_debut", calendrier.getTime());
+		    jsonObject1.put("date_fin", "initialisation");
+		    jsonObject1.put("heures", 1.1);
+		    jsonObject1.put("type", "base");
+		    
+		    jsonArray.put(jsonObject1);
+		    
+		    jsonObject1.put("projet", projet2.getNom_Projet());
+		    jsonObject1.put("discipline", projet2.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject1.put("employe", employe1.getNom());
+		    jsonObject1.put("date_debut", calendrier.getTime());
+		    jsonObject1.put("date_fin", "initialisation");
+		    jsonObject1.put("heures", 1.1);
+		    jsonObject1.put("type", "base");
+		    
+		    jsonArray.put(jsonObject1);
+		    
+		    
+		    JSONObject jsonObject2 = new JSONObject();
+			
+		    jsonObject2.put("projet", projet2.getNom_Projet());
+		    jsonObject2.put("discipline", projet2.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject2.put("employe", employe2.getNom());
+		    jsonObject2.put("date_debut", calendrier.getTime());
+		    jsonObject2.put("date_fin", "initialisation");
+		    jsonObject2.put("heures", 1.2);
+		    jsonObject2.put("type", "base");
+		    
+		    jsonArray.put(jsonObject2);
+		    
+		    jsonObject2.put("projet", projet3.getNom_Projet());
+		    jsonObject2.put("discipline", projet3.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject2.put("employe", employe2.getNom());
+		    jsonObject2.put("date_debut", calendrier.getTime());
+		    jsonObject2.put("date_fin", "initialisation");
+		    jsonObject2.put("heures", 1.2);
+		    jsonObject2.put("type", "base");
+		    
+		    jsonArray.put(jsonObject2);
+		    
+		    
+		    JSONObject jsonObject3 = new JSONObject();
+			
+		    jsonObject3.put("projet", projet3.getNom_Projet());
+		    jsonObject3.put("discipline", projet3.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject3.put("employe", employe3.getNom());
+		    jsonObject3.put("date_debut", calendrier.getTime());
+		    jsonObject3.put("date_fin", "initialisation");
+		    jsonObject3.put("heures", 1.3);
+		    jsonObject3.put("type", "base");
+		    
+		    jsonArray.put(jsonObject3);
+		    
+		    jsonObject3.put("projet", projet1.getNom_Projet());
+		    jsonObject3.put("discipline", projet1.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject3.put("employe", employe3.getNom());
+		    jsonObject3.put("date_debut", calendrier.getTime());
+		    jsonObject3.put("date_fin", "initialisation");
+		    jsonObject3.put("heures", 1.3);
+		    jsonObject3.put("type", "base");
+		    
+		    jsonArray.put(jsonObject3);
+	    }
+    }
+    
+    // Écrire les données JSON dans le fichier
+        fileWriter.write(jsonArray.toString(4));
+        fileWriter.flush();
+    } catch (IOException exception) {
+        System.err.println("Erreur lors de l'enregistrement ou la lecture des données d'activité : " + exception.getMessage());
+    }
+		setAdmin(a);
+		ajouterProjet(projet1);
+		ajouterProjet(projet2);
+		ajouterProjet(projet3);
+		ajouter_Employe(employe1);
+		projet1.ajouter_Employe(employe1);
+		projet2.ajouter_Employe(employe1);
+		ajouter_Employe(employe2);
+		projet2.ajouter_Employe(employe2);
+		projet3.ajouter_Employe(employe2);
+		ajouter_Employe(employe3);
+		projet3.ajouter_Employe(employe3);
+		projet1.ajouter_Employe(employe3);
+		sauvegarder_Personnes();
+		sauvegarder_Projets();
+	}
+	
 	public Date StringToDate(String dateString) {
 		 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 	        try {
@@ -338,6 +554,8 @@ public class Compagnie {
 	        }
 	}
 	
+	
+	
 
 	public static void main(String[] args) {
 		boolean deconnecter = true;
@@ -347,22 +565,7 @@ public class Compagnie {
 			c.lire_Personnes();
 			c.lire_Projets();
 		}catch(NoSuchFileException e1) {
-			Date d = new Date();
-			Projet pro = new Projet("Projet1",1,10,10,10,10,10,d,d);
-			Projet pro2 = new Projet("Projet2",1,10,10,10,10,10,d,d);
-			Employe e = new Employe("Employe1",1,"Développeur sénior",15,17,d,d,123456789);
-			Employe e2 = new Employe("Employe2",1,"Développeur junior",15,17,d,d,123456789);
-			Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
-			
-			c.setAdmin(a);
-			c.ajouterProjet(pro);
-			c.ajouterProjet(pro2);
-			c.ajouter_Employe(e);
-			pro.ajouter_Employe(e);
-			c.ajouter_Employe(e2);
-			pro.ajouter_Employe(e2);
-			c.sauvegarder_Personnes();
-			c.sauvegarder_Projets();
+			c.initialisation();
         } catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -390,7 +593,7 @@ public class Compagnie {
 		
 		while(!deconnecter) {
 			if (p.getNom().equals(c.getAdmin().getNom()))
-				deconnecter = c.menuAdmin((Admin)p,c);
+				deconnecter = c.menuAdmin((Admin)p);
 			else
 				deconnecter = c.menuEmploye((Employe)p);
 		}
@@ -413,11 +616,10 @@ public class Compagnie {
 		switch (choix) {
 		case 1:
 			System.out.println("Début d'activité sur le projet:");
-			int j = 1;
 			for(int i = 0; i<this.getListeProjets().size();i++) {
 				Projet p = this.getListeProjets().get(i);
 				if(p.getListe_Employes().contains(e)) {
-				System.out.println(j+". "+p.getNom_Projet());
+				System.out.println(i+". "+p.getNom_Projet());
 				}
 			}
 			Projet projet = this.getListeProjets().get(scan.nextInt()-1);
@@ -487,7 +689,7 @@ public class Compagnie {
 	
 	
 	
-	public boolean menuAdmin(Admin admin, Compagnie c) {
+	public boolean menuAdmin(Admin admin) {
 		System.out.println("\n\nBienvenue " + admin.getNom());
 		System.out.println("Menu admin");
 		System.out.println("1. Modifier NPE");
@@ -505,10 +707,10 @@ public class Compagnie {
 		
 		switch (choix) {
 		case 1:
-			System.out.println("NPE = "+c.getNpe());
+			System.out.println("NPE = "+this.getNpe());
 			System.out.println("Nouveau NPE:");
 			int NPE = scan.nextInt();
-			c.setNpe(NPE);
+			admin.modifier_Npe(this, NPE);
 			System.out.println("Le nouveau npe est "+ NPE);
 			break;
 		case 2:
@@ -545,19 +747,19 @@ public class Compagnie {
 				System.out.println("Date fin: AAAA/MM/JJ");
 				String dateFin = scan.next();
 				
-				admin.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin,c);
+				admin.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin,this);
 				System.out.println("Projet créé!");
 			}
 			if(choix2 == 2) {
 				System.out.println("Choisir le projet: ");
-				for (int i = 1; i<=c.getListeProjets().size();i++) {
-					System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+				for (int i = 1; i<=this.getListeProjets().size();i++) {
+					System.out.println(i+". "+this.getListeProjets().get(i-1).getNom_Projet());
 				}
-				Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+				Projet projet = this.getListeProjets().get(scan.nextInt()-1);
 				System.out.println("Voulez-vous vraiment supprimer "+ projet.getNom_Projet() + " ? (y/n)");
 				char rep = scan.next().charAt(0);
 				if(rep == 'y') {
-					admin.supprimer_Projet(projet,c);
+					admin.supprimer_Projet(projet,this);
 					System.out.println(projet.getNom_Projet() + " supprimé!");
 				}else
 					System.out.println(projet.getNom_Projet() + " non supprimé, retour au menu");
@@ -565,10 +767,10 @@ public class Compagnie {
 			}
 			if(choix2 == 3) {
 				System.out.println("Choisir le projet: ");
-				for (int i = 1; i<=c.getListeProjets().size();i++) {
-					System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+				for (int i = 1; i<=this.getListeProjets().size();i++) {
+					System.out.println(i+". "+this.getListeProjets().get(i-1).getNom_Projet());
 				}
-				Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+				Projet projet = this.getListeProjets().get(scan.nextInt()-1);
 				
 				System.out.println("Modifier Projet " + projet.getNom_Projet());
 				System.out.println("1.nom");
@@ -649,21 +851,21 @@ public class Compagnie {
 				System.out.println(" numero de nas:");
 				int numero_nas = scan.nextInt();
 				
-				admin.ajouter_Employe(nom, id, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas, c);
+				admin.ajouter_Employe(nom, id, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas, this);
 				System.out.println("Employer ajouter");
 				
 				
 			}
 			if(choix3 == 2) {
 				System.out.println("Choisir le employer: ");
-				for (int i = 1; i<=c.getListe_Employes().size();i++) {
-					System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
+				for (int i = 1; i<=this.getListe_Employes().size();i++) {
+					System.out.println(i+". "+this.getListe_Employes().get(i-1).getNom());
 				}
-				Employe employe = c.getListe_Employes().get(scan.nextInt()-1);
+				Employe employe = this.getListe_Employes().get(scan.nextInt()-1);
 				System.out.println("Voulez-vous vraiment supprimer "+ employe.getNom() + " ? (y/n)");
 				char rep = scan.next().charAt(0);
 				if(rep == 'y') {
-					admin.supprimer_Employe(employe,c);
+					admin.supprimer_Employe(employe,this);
 					System.out.println(employe.getNom() + " supprimé!");
 				}else
 					System.out.println(employe.getNom() + " non supprimé, retour au menu");
@@ -672,10 +874,10 @@ public class Compagnie {
 				
 				if(choix3== 3) {
 					System.out.println("Choisir l'employe: ");
-					for (int i = 1; i<=c.getListe_Employes().size();i++) {
-						System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
+					for (int i = 1; i<=this.getListe_Employes().size();i++) {
+						System.out.println(i+". "+this.getListe_Employes().get(i-1).getNom());
 					}
-					Employe employe = c.getListe_Employes().get(scan.nextInt()-1);
+					Employe employe = this.getListe_Employes().get(scan.nextInt()-1);
 					
 					System.out.println("Modifier employe " + employe.getNom());
 					System.out.println("1.nom");
@@ -752,34 +954,34 @@ public class Compagnie {
 			break;
 		case 5:
 			System.out.println("Choisir le projet: ");
-			for (int i = 1; i<=c.getListeProjets().size();i++) {
-				System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+			for (int i = 1; i<=this.getListeProjets().size();i++) {
+				System.out.println(i+". "+this.getListeProjets().get(i-1).getNom_Projet());
 			}
 			
-			Projet projet = c.getListeProjets().get(scan.nextInt()-1);
+			Projet projet = this.getListeProjets().get(scan.nextInt()-1);
 			
 			System.out.println("Choisir l'employé: ");
-			for (int i = 1; i<=c.getListe_Employes().size();i++) {
-				System.out.println(i+". "+c.getListe_Employes().get(i-1).getNom());
+			for (int i = 1; i<=this.getListe_Employes().size();i++) {
+				System.out.println(i+". "+this.getListe_Employes().get(i-1).getNom());
 			}
-			Employe per = c.getListe_Employes().get(scan.nextInt()-1);
-			admin.assigner_Projet(per,projet,c);
+			Employe per = this.getListe_Employes().get(scan.nextInt()-1);
+			admin.assigner_Projet(per,projet,this);
 			
 			
 			break;
 		case 6:
 			System.out.println("Choisir le projet: ");
-			for (int i = 1; i<=c.getListeProjets().size();i++) {
-				System.out.println(i+". "+c.getListeProjets().get(i-1).getNom_Projet());
+			for (int i = 1; i<=this.getListeProjets().size();i++) {
+				System.out.println(i+". "+this.getListeProjets().get(i-1).getNom_Projet());
 			}
 			
-			projet = c.getListeProjets().get(scan.nextInt()-1);
+			projet = this.getListeProjets().get(scan.nextInt()-1);
 			
 			System.out.println("Choisir l'employé: ");
 			for (int i = 1; i<=projet.getListe_Employes().size();i++) {
 				System.out.println(i+". "+projet.getListe_Employes().get(i-1).getNom());
 			}
-			Employe e = c.getListe_Employes().get(scan.nextInt()-1);
+			Employe e = this.getListe_Employes().get(scan.nextInt()-1);
 			projet.supprimer_Employe(e);
 			System.out.println("Employé "+ e.getNom() + " a été supprimé du projet "+ projet.getNom_Projet());
 			break;
@@ -790,12 +992,12 @@ public class Compagnie {
 			System.out.println("Rapport de progression");
 			System.out.println("Indiquez quel type de rapport vous voulez:");
 			System.out.println("1. Rapport global");
-			for(int i = 2; i<=c.getListeProjets().size()+1;i++) {
-				System.out.println(i+". Rapport du projet "+c.getListeProjets().get(i-2).getNom_Projet());
+			for(int i = 2; i<=this.getListeProjets().size()+1;i++) {
+				System.out.println(i+". Rapport du projet "+this.getListeProjets().get(i-2).getNom_Projet());
 			}
 			choix2 = scan.nextInt();
 			if(choix2 > 1) {
-				projet = c.getListeProjets().get(choix2-2);
+				projet = this.getListeProjets().get(choix2-2);
 				admin.rapport_Etat_Projet(projet);
 			} else {
 				admin.rapport_Total_Projet();

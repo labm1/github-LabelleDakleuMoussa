@@ -63,4 +63,9 @@ public class Admin extends Personne{
 	public void rapport_Salaire() {
 		
 	}
+	
+	public void modifier_Npe(Compagnie c, int npe) {
+		c.setNpe(npe);
+		c.sauvegarder_Projets();
+	}
 }
