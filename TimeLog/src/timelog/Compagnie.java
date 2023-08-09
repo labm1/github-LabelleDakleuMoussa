@@ -452,7 +452,7 @@ public class Compagnie {
 		Employe employe2 = new Employe("employe2",2,"Développeur junior",15,17,d,d,123456789);
 		Employe employe3 = new Employe("employe3",3,"Développeur junior",15,17,d,d,123456789);
 			
-		Admin a = new Admin("admin",10,"Admin",15,17,d,d,123456789);
+		Admin a = new Admin("admin",10,"admin",15,17,d,d,123456789);
 		
   try (FileWriter fileWriter = new FileWriter("dates.json")) {
     
@@ -617,7 +617,7 @@ public class Compagnie {
 			while(!deconnecter) {
 				if (p.getNom().equals(c.getAdmin().getNom()))
 					deconnecter = c.menuAdmin((Admin)p);
-				
+				else
 					deconnecter = c.menuEmploye((Employe)p);
 			}
 		}
