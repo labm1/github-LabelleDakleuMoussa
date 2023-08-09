@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -580,7 +581,7 @@ public class Compagnie {
 		int essais = 0,id;
 		String user;
 		Personne p;
-		
+		try {
 		do {
 			System.out.println("Connexion\nUser:");
 			user = scan.next();
@@ -601,11 +602,17 @@ public class Compagnie {
 		while(!deconnecter) {
 			if (p.getNom().equals(c.getAdmin().getNom()))
 				deconnecter = c.menuAdmin((Admin)p);
-			else
+			
 				deconnecter = c.menuEmploye((Employe)p);
 		}
 	}
-	
+	catch(InputMismatchException e1) {
+		System.out.println("Erreur : vous devez entrer un numero Valide .");
+		
+		
+	}
+		
+	}
 	
 	
 	public boolean menuEmploye(Employe e) {
