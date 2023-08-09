@@ -402,10 +402,7 @@ public class Compagnie {
 	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
            String nomProjet = (String) jsonObject.get("projet");
-           String date_debut = (String) jsonObject.get("date_debut");
-           String date_fin = (String) jsonObject.get("date_fin");
-           Date debut = StringToDate(date_debut);
-           
+           String date_fin = (String) jsonObject.get("date_fin");           
           if(nomProjet.equals(projet) && !date_fin.equals("null")) {
         	  heures += jsonObject.getDouble("heures");
           }
@@ -424,9 +421,7 @@ public class Compagnie {
 
            String nomProjet = (String) jsonObject.get("projet");
            String nomDiscipline = (String) jsonObject.get("discipline");
-           String date_debut = (String) jsonObject.get("date_debut");
            String date_fin = (String) jsonObject.get("date_fin");
-           Date debut = StringToDate(date_debut);
            
           if(nomProjet.equals(projet) && nomDiscipline.equals(discipline) && !date_fin.equals("null")) {
         	  heures += jsonObject.getDouble("heures");
@@ -570,12 +565,14 @@ public class Compagnie {
 	
 	
 	
-
+	//MAIN
 	public static void main(String[] args) {
 		boolean deconnecter = true;
 		
 		Compagnie c = Compagnie.getInstance();
 		
+		//essayer de lire les fichiers json. s'ils n'existent pas, 
+		//initialiser avec les données de base
 		try {
 			c.lire_Personnes();
 			c.lire_Projets();
@@ -588,41 +585,54 @@ public class Compagnie {
 		int essais = 0,id;
 		String user;
 		Personne p;
-		try {
-		do {
-			System.out.println("Connexion\nUser:");
-			user = scan.next();
-			System.out.println("ID:");
-			id = scan.nextInt();
-			
-			p = c.trouverPersonne(user);
-			if(p == null || !p.seconnecter(id)) {
-				System.out.println("Mauvais nom d'utilisateur ou mot de passe; veuillez réessayer");
-				essais++;
-				if (essais == 3) 
-					System.out.println("Mauvais identifant 3 fois de suite: fin du programme");
-			}
-			else
-				deconnecter = false;
-		} while(deconnecter && essais<3);
 		
-		while(!deconnecter) {
-			if (p.getNom().equals(c.getAdmin().getNom()))
-				deconnecter = c.menuAdmin((Admin)p);
+		//Connexion au système
+		try {
+			do {
+				//entrer le user et mot de passe/id
+				System.out.println("Connexion\nUser:");
+				user = scan.next();
+				System.out.println("ID/Mot De Passe:");
+				id = scan.nextInt();
+				
+				//essayer de trouver la personne dans la liste des personnes;
+				//si le user de la personne n'est pas trouvé ou que la méthode
+				//se connecter retourne faux(id non valide), on affiche un message d'erreur.
+				//si après 3 essais il n'y a pas le bon mot de passe ou user, le système se 
+				//déconnecte
+				p = c.trouverPersonne(user);
+				if(p == null || !p.seconnecter(id)) {
+					System.out.println("Mauvais nom d'utilisateur ou mot de passe; veuillez réessayer");
+					essais++;
+					if (essais == 3) 
+						System.out.println("Mauvais identifant 3 fois de suite: fin du programme");
+				}
+				else
+					deconnecter = false;
+			} while(deconnecter && essais<3);
 			
-				deconnecter = c.menuEmploye((Employe)p);
+			//Afficher le menu en continu
+			//menuAdmin si admin, et
+			//menuEmploye si employé
+			while(!deconnecter) {
+				if (p.getNom().equals(c.getAdmin().getNom()))
+					deconnecter = c.menuAdmin((Admin)p);
+				
+					deconnecter = c.menuEmploye((Employe)p);
+			}
+		}
+		catch(InputMismatchException e1) {
+			System.out.println("Erreur : vous devez entrer un numero Valide.");
 		}
 	}
-	catch(InputMismatchException e1) {
-		System.out.println("Erreur : vous devez entrer un numero Valide .");
-		
-		
-	}
-		
-	}
 	
-	
+	/**
+	 * @return boolean Si l'employé a été déconnecté du menu ou non
+	 * @param Employe L'employé qui a ouvert le menu
+	 */
 	public boolean menuEmploye(Employe e) {
+		
+		//afficher le menu principal de l'employé
 		System.out.println("\n\nBienvenue "+e.getNom());
 		System.out.println("Menu Employé");
 		System.out.println("1. Début d'activité");
@@ -635,6 +645,8 @@ public class Compagnie {
 		int choix = scan.nextInt();
 		
 		switch (choix) {
+		
+		//1. Début d'activité
 		case 1:
 			System.out.println("Début d'activité sur le projet:");
 			for(int i = 0; i<this.getListeProjets().size();i++) {
@@ -651,10 +663,14 @@ public class Compagnie {
 			}
 			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1));
 			break;
+			
+		//2. Fin d'activité
 		case 2:
 			System.out.println("Fin d'activité");
 			e.terminer_Activite();
 			break;
+			
+		//3. Talon
 		case 3:
 			System.out.println("Talon de paye");
 			System.out.println("Talon à partir d'une certaine date ou non? (y/n)");
@@ -669,7 +685,7 @@ public class Compagnie {
 		
 			break;
 			
-			
+		//4. Heures travaillées de base
 		case 4:
 			try {
 			System.out.println("Heures de base travaillées");
@@ -683,6 +699,8 @@ public class Compagnie {
 				System.out.println("mettre date valide");
 			}
 			break;
+			
+		//5. Heures travaillées supplémentaires
 		case 5:
 			try {
 			System.out.println("Heures supplémentaires travaillée");
@@ -696,6 +714,8 @@ public class Compagnie {
 				System.out.println("mettre date valide");
 			}
 			break;
+			
+		//6. Rapport de progression
 		case 6:
 			System.out.println("Rapport de progression");
 			System.out.println("Indiquez quel type de rapport vous voulez:");
@@ -711,6 +731,8 @@ public class Compagnie {
 				e.rapport_Total_Projet();
 			}
 			break;
+			
+		//7. Se déconnecter
 		case 7:
 			return true;
 		default:
@@ -721,7 +743,10 @@ public class Compagnie {
 	
 	
 	
-	
+	/**
+	 * @return boolean Si l'admin a été déconnecté du menu ou non
+	 * @param admim L'admin qui a ouvert le menu
+	 */
 	public boolean menuAdmin(Admin admin) {
 		System.out.println("\n\nBienvenue " + admin.getNom());
 		System.out.println("Menu admin");

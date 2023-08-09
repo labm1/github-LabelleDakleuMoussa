@@ -43,7 +43,6 @@ public class Employe extends Personne {
 		try {
 			PayInfo i = new PayInfo(getId_personne(),c.lire_Heures_Travaillees_Base(getNom(), debut, fin),c.lire_Heures_Travaillees_Supp(getNom(), debut, fin),getTaux_horaire_base(),getTaux_horaire_supp(),debut,fin);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//p.getTalon(i);
@@ -91,7 +90,6 @@ public class Employe extends Personne {
 			System.out.println(heuresTravaillees.toString(4));
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//imprimer le nombre d'heures travaillées entre les deux dates

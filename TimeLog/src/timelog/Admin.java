@@ -1,4 +1,5 @@
 package timelog;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -66,7 +67,55 @@ public class Admin extends Personne{
 	}
 	
 	public void rapport_Salaire() {
+		Compagnie c = Compagnie.getInstance();
+		Calendar calendrier = Calendar.getInstance();
+		Date fin = calendrier.getTime();
 		
+		calendrier.add(Calendar.DATE, -14);
+		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+		if(semaine % 2 == 0) {
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine++);
+		}
+		Date debut = calendrier.getTime();
+		try {
+			double salaireBrut=0;
+		for(int i = 0; i<c.getListe_Employes().size();i++) {
+			salaireBrut += c.lire_Heures_Travaillees_Base(getNom(), debut, fin)*c.getListe_Employes().get(i).getTaux_horaire_base()+c.lire_Heures_Travaillees_Supp(getNom(), debut, fin);
+			//heuresSupp += c.lire_Heures_Travaillees_Supp(getNom(), debut, fin);
+		}
+		
+		Payroll p = new Payroll();
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void rapport_Salaire(String dateString) {
+		Compagnie c = Compagnie.getInstance();
+		Calendar calendrier = Calendar.getInstance();
+		calendrier.set(Integer.parseInt(dateString.substring(0, 4)), Integer.parseInt(dateString.substring(5, 7))-1, Integer.parseInt(dateString.substring(8)));
+		
+		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+		if(semaine % 2 == 0) {
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine--);
+		}
+		Date fin = calendrier.getTime();
+		calendrier.add(Calendar.DATE, -14);
+		Date debut = calendrier.getTime();
+		
+		try {
+			double salaireBrut=0;
+		for(int i = 0; i<c.getListe_Employes().size();i++) {
+			salaireBrut += c.lire_Heures_Travaillees_Base(getNom(), debut, fin)*c.getListe_Employes().get(i).getTaux_horaire_base()+c.lire_Heures_Travaillees_Supp(getNom(), debut, fin);
+			//heuresSupp += c.lire_Heures_Travaillees_Supp(getNom(), debut, fin);
+		}
+		
+		Payroll p = new Payroll();
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void modifier_Npe(int npe) {
