@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -587,7 +588,7 @@ public class Compagnie {
 		int essais = 0,id;
 		String user;
 		Personne p;
-		
+		try {
 		do {
 			System.out.println("Connexion\nUser:");
 			user = scan.next();
@@ -608,11 +609,17 @@ public class Compagnie {
 		while(!deconnecter) {
 			if (p.getNom().equals(c.getAdmin().getNom()))
 				deconnecter = c.menuAdmin((Admin)p);
-			else
+			
 				deconnecter = c.menuEmploye((Employe)p);
 		}
 	}
-	
+	catch(InputMismatchException e1) {
+		System.out.println("Erreur : vous devez entrer un numero Valide .");
+		
+		
+	}
+		
+	}
 	
 	
 	public boolean menuEmploye(Employe e) {
@@ -659,22 +666,35 @@ public class Compagnie {
 				System.out.println("Depuis la dernière période de paye");
 				e.demander_Talon();
 			}
+		
 			break;
+			
+			
 		case 4:
+			try {
 			System.out.println("Heures de base travaillées");
 			System.out.println("Veuillez indiquer la date de début de la période désirée (AAAA/MM/JJ)");
 			String debut = scan.next();
 			System.out.println("Veuillez indiquer la date de fin de la période désirée (AAAA/MM/JJ)");
 			String fin = scan.next();
 			e.demander_Nbre_Heure_Travaille(debut,fin);
+			}
+			catch (NumberFormatException e6) {
+				System.out.println("mettre date valide");
+			}
 			break;
 		case 5:
+			try {
 			System.out.println("Heures supplémentaires travaillée");
 			System.out.println("Veuillez indiquer la date de début de la période désirée (AAAA/MM/JJ)");
-			debut = scan.next();
+			String debut = scan.next();
 			System.out.println("Veuillez indiquer la date de fin de la période désirée (AAAA/MM/JJ)");
-			fin = scan.next();
+		    String 	fin = scan.next();
 			e.demander_Nbre_Heure_Supp_Travaille(debut,fin);
+			}
+			catch (NumberFormatException e6) {
+				System.out.println("mettre date valide");
+			}
 			break;
 		case 6:
 			System.out.println("Rapport de progression");

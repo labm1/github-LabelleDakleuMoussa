@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Georges
+ *
+ */
 public class PayInfo implements PayrollInterface {
 
     protected int id_Employe;
