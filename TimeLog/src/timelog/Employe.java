@@ -12,7 +12,6 @@ public class Employe extends Personne {
 			Date date_depart, int numero_nas) {
 		super(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
 	}
-		// TODO Auto-generated constructor stub
 	
 	public void connecter_Activite(Projet p,Discipline d){
 		Compagnie c = Compagnie.getInstance();
@@ -29,24 +28,59 @@ public class Employe extends Personne {
 	}
 	
 	public void demander_Periode(String dateString) {
+		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
-		calendrier.set(Integer.parseInt(dateString.substring(0, 4)), Integer.parseInt(dateString.substring(5, 7)), Integer.parseInt(dateString.substring(8)));
-		Date date = calendrier.getTime();
+		calendrier.set(Integer.parseInt(dateString.substring(0, 4)), Integer.parseInt(dateString.substring(5, 7))-1, Integer.parseInt(dateString.substring(8)));
+		
+		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+		if(semaine % 2 == 0) {
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine--);
+		}
+		Date fin = calendrier.getTime();
+		calendrier.add(Calendar.DATE, -14);
+		Date debut = calendrier.getTime();
+		Payroll p = new Payroll();
+		try {
+			PayInfo i = new PayInfo(getId_personne(),c.lire_Heures_Travaillees_Base(getNom(), debut, fin),c.lire_Heures_Travaillees_Supp(getNom(), debut, fin),getTaux_horaire_base(),getTaux_horaire_supp(),debut,fin);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//p.getTalon(i);
 		//imprimer à l'écran en json le salaire brut et net total depuis la date
 	}
 	
 	public void demander_Talon() {
 		//imprimer à l'écran en json le salaire brut et net depuis la dernière période de paye
+		Compagnie c = Compagnie.getInstance();
+		Calendar calendrier = Calendar.getInstance();
+		Date fin = calendrier.getTime();
+		
+		calendrier.add(Calendar.DATE, -14);
+		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+		if(semaine % 2 == 0) {
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine++);
+		}
+		Date debut = calendrier.getTime();
+		
+		
+		Payroll p = new Payroll();
+		try {
+			PayInfo i = new PayInfo(getId_personne(),c.lire_Heures_Travaillees_Base(getNom(), debut, fin),c.lire_Heures_Travaillees_Supp(getNom(), debut, fin),getTaux_horaire_base(),getTaux_horaire_supp(),debut,fin);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//p.getTalon(i);
 	}
 	
 	public void demander_Nbre_Heure_Travaille(String dateDebut, String dateFin) {
 		DecimalFormat df = new DecimalFormat("#.00");
 		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
-		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7)), Integer.parseInt(dateDebut.substring(8)));
+		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7))-1, Integer.parseInt(dateDebut.substring(8)));
 		Date debut = calendrier.getTime();
 		
-		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7)), Integer.parseInt(dateFin.substring(8)));
+		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7))-1, Integer.parseInt(dateFin.substring(8)));
 		Date fin = calendrier.getTime();
 		try {
 			double heures = c.lire_Heures_Travaillees_Base(getNom(),debut ,fin);
@@ -67,10 +101,10 @@ public class Employe extends Personne {
 		DecimalFormat df = new DecimalFormat("#.00");
 		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
-		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7)), Integer.parseInt(dateDebut.substring(8)));
+		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7))-1, Integer.parseInt(dateDebut.substring(8)));
 		Date debut = calendrier.getTime();
 		
-		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7)), Integer.parseInt(dateFin.substring(8)));
+		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7))-1, Integer.parseInt(dateFin.substring(8)));
 		Date fin = calendrier.getTime();
 		//imprimer le nombre d'heures travaillées supplémentaires entre les deux dates
 		

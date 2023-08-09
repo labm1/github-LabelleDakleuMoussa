@@ -74,6 +74,7 @@ public class Compagnie {
 
 	public void setAdmin(Admin admin) {
 		this.admin = admin;
+		this.sauvegarder_Personnes();
 	}
 
 	public void ajouterProjet(Projet p){
@@ -133,7 +134,7 @@ public class Compagnie {
 		dataPersonnes.put(dataAdmin);
 		
 		
-		 try (FileWriter fileWriter = new FileWriter("test.json")) {
+		 try (FileWriter fileWriter = new FileWriter("personnes.json")) {
 	            fileWriter.write(dataPersonnes.toString(4));
 	            fileWriter.flush();
 	        } catch (IOException e) {
@@ -217,7 +218,12 @@ public class Compagnie {
 	    jsonObject.put("date_fin", "null");
 	    jsonObject.put("heures", 0);
 	    
-	    if(Calendar.HOUR_OF_DAY > 16 || Calendar.HOUR_OF_DAY < 7 || Calendar.DAY_OF_WEEK == 1 || Calendar.DAY_OF_WEEK == 7) {
+	    Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		;
+	    if(calendar.get(Calendar.HOUR_OF_DAY) > 16 || calendar.get(Calendar.HOUR_OF_DAY) < 7 || calendar.get(Calendar.DAY_OF_WEEK) == 1 || calendar.get(Calendar.DAY_OF_WEEK)== 7) {
+	    	System.out.println(Calendar.HOUR_OF_DAY);
+	    	System.out.println(Calendar.DAY_OF_WEEK);
 	    	 jsonObject.put("type", "supp");
 	    }else {
 	    	jsonObject.put("type", "base");
@@ -269,7 +275,7 @@ public class Compagnie {
 	}
 	
 	public void lire_Personnes() throws NoSuchFileException, IOException{
-            String jsonData = new String(Files.readAllBytes(Paths.get("test.json")));
+            String jsonData = new String(Files.readAllBytes(Paths.get("personnes.json")));
 
             JSONArray jsonArray = new JSONArray(jsonData.toString());
 		     for (int i = 0; i < jsonArray.length(); i++) {
@@ -288,7 +294,7 @@ public class Compagnie {
                // Créer un nouvel objet Employe avec les données extraites
                Date embauche = StringToDate(date_embauche);
                Date depart = StringToDate(date_depart);
-               if(nom.equals("admin"))
+               if(poste.equals("admin"))
             	   setAdmin(new Admin(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas));
                else {
             	   Employe employe = new Employe(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas);
@@ -566,12 +572,13 @@ public class Compagnie {
 
 	public static void main(String[] args) {
 		boolean deconnecter = true;
+		
 		Compagnie c = Compagnie.getInstance();
-
+		
 		try {
 			c.lire_Personnes();
 			c.lire_Projets();
-		}catch(NoSuchFileException e1) {
+		}catch(NoSuchFileException e) {
 			c.initialisation();
         } catch (IOException e) {
 			e.printStackTrace();
@@ -626,7 +633,7 @@ public class Compagnie {
 			for(int i = 0; i<this.getListeProjets().size();i++) {
 				Projet p = this.getListeProjets().get(i);
 				if(p.getListe_Employes().contains(e)) {
-				System.out.println(i+". "+p.getNom_Projet());
+				System.out.println(i+1+". "+p.getNom_Projet());
 				}
 			}
 			Projet projet = this.getListeProjets().get(scan.nextInt()-1);
@@ -643,7 +650,7 @@ public class Compagnie {
 			break;
 		case 3:
 			System.out.println("Talon de paye");
-			System.out.println("Salaire à partir d'une certaine date ou non? (y/n)");
+			System.out.println("Talon à partir d'une certaine date ou non? (y/n)");
 			char rep = scan.next().charAt(0);
 			if(rep == 'y') {
 				System.out.println("Veuillez indiquer à partir de quelle date: (AAAA/MM/JJ)");

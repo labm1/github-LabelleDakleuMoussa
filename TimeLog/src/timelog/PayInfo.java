@@ -14,87 +14,72 @@ public class PayInfo implements PayrollInterface {
     public Date date_debut;
     public Date date_fin;
 
-    public int getId_Employe() {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.id_Employe;
-    }
+    public PayInfo(int id_Employe, double nbre_heure_base, double nbre_heure_supp, double taux_Horaire_Base,
+			double taux_Horaire_Supp, Date date_debut, Date date_fin) {
+		super();
+		this.id_Employe = id_Employe;
+		this.nbre_heure_base = nbre_heure_base;
+		this.nbre_heure_supp = nbre_heure_supp;
+		this.taux_Horaire_Base = taux_Horaire_Base;
+		this.taux_Horaire_Supp = taux_Horaire_Supp;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+	}
 
-    public void setId_Employe(int id_Employe) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        this.id_Employe = id_Employe;
-    }
+	public int getId_Employe() {
+		return id_Employe;
+	}
 
-    public double getNbre_heure_base() {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.nbre_heure_base;
-    }
+	public void setId_Employe(int id_Employe) {
+		this.id_Employe = id_Employe;
+	}
 
-    public double setNbre_heure_base(double value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.nbre_heure_base = value;
+	public double getNbre_heure_base() {
+		return nbre_heure_base;
+	}
 
-    }
+	public void setNbre_heure_base(double nbre_heure_base) {
+		this.nbre_heure_base = nbre_heure_base;
+	}
 
-    public double getNbre_heure_supp(double value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.nbre_heure_supp = value;
-    }
+	public double getNbre_heure_supp() {
+		return nbre_heure_supp;
+	}
 
-    public double setNbre_heure_supp(double value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.nbre_heure_supp = value;
-    }
+	public void setNbre_heure_supp(double nbre_heure_supp) {
+		this.nbre_heure_supp = nbre_heure_supp;
+	}
 
-    public double getTaux_Horaire_Base(double value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.taux_Horaire_Base = value;
-    }
+	public double getTaux_Horaire_Base() {
+		return taux_Horaire_Base;
+	}
 
-    public double setTaux_Horaire_Base(double value) {
-        return this.taux_Horaire_Base = value;
-    }
+	public void setTaux_Horaire_Base(double taux_Horaire_Base) {
+		this.taux_Horaire_Base = taux_Horaire_Base;
+	}
 
-    public double getTaux_Horaire_Supp(double value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.taux_Horaire_Supp = value;
-    }
+	public double getTaux_Horaire_Supp() {
+		return taux_Horaire_Supp;
+	}
 
-    public double setTaux_Horaire_Supp(double value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.taux_Horaire_Supp = value;
-    }
+	public void setTaux_Horaire_Supp(double taux_Horaire_Supp) {
+		this.taux_Horaire_Supp = taux_Horaire_Supp;
+	}
 
-    public Date getDate_debut() {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.date_debut;
-    }
+	public Date getDate_debut() {
+		return date_debut;
+	}
 
-    public Date setDate_debut(Date value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.date_debut = value;
-    }
+	public void setDate_debut(Date date_debut) {
+		this.date_debut = date_debut;
+	}
 
-    public Date getDate_fin() {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.date_fin;
-    }
+	public Date getDate_fin() {
+		return date_fin;
+	}
 
-    public Date setDate_fin(final Date value) {
-        // Automatically generated method. Please delete this comment before entering
-        // specific code.
-        return this.date_fin = value;
-    }
+	public void setDate_fin(Date date_fin) {
+		this.date_fin = date_fin;
+	}
 
 }

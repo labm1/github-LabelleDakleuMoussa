@@ -13,10 +13,10 @@ public class Admin extends Personne{
 			double heuresImplementation, double heuresTest, double heuresDeploiement, String dateDebut, String dateFin) {
 		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
-		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7)), Integer.parseInt(dateDebut.substring(8)));
+		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7))-1, Integer.parseInt(dateDebut.substring(8)));
 		Date debut = calendrier.getTime();
 		
-		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7)), Integer.parseInt(dateFin.substring(8)));
+		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7))-1, Integer.parseInt(dateFin.substring(8)));
 		Date fin = calendrier.getTime();
 		c.ajouterProjet(new Projet(nom, id, heuresDesign1, heuresDesign2, heuresImplementation, heuresTest, heuresDeploiement, debut, fin));
 		c.sauvegarder_Projets();
@@ -40,10 +40,10 @@ public class Admin extends Personne{
 			String date_depart, int numero_nas) {
 		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
-		calendrier.set(Integer.parseInt(date_embauche.substring(0, 4)), Integer.parseInt(date_embauche.substring(5, 7)), Integer.parseInt(date_embauche.substring(8)));
+		calendrier.set(Integer.parseInt(date_embauche.substring(0, 4)), Integer.parseInt(date_embauche.substring(5, 7))-1, Integer.parseInt(date_embauche.substring(8)));
 		Date embauche = calendrier.getTime();
 		
-		calendrier.set(Integer.parseInt(date_depart.substring(0, 4)), Integer.parseInt(date_depart.substring(5, 7)), Integer.parseInt(date_depart.substring(8)));
+		calendrier.set(Integer.parseInt(date_depart.substring(0, 4)), Integer.parseInt(date_depart.substring(5, 7))-1, Integer.parseInt(date_depart.substring(8)));
 		Date depart = calendrier.getTime();
 		c.ajouter_Employe(new Employe (nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, embauche, depart ,numero_nas ));
 		c.sauvegarder_Personnes();
