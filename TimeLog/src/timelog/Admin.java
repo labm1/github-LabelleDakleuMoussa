@@ -10,7 +10,8 @@ public class Admin extends Personne{
 	}
 	
 	public void ajouter_Projet(String nom,int id,double heuresDesign1, double heuresDesign2, 
-			double heuresImplementation, double heuresTest, double heuresDeploiement, String dateDebut, String dateFin, Compagnie c) {
+			double heuresImplementation, double heuresTest, double heuresDeploiement, String dateDebut, String dateFin) {
+		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
 		calendrier.set(Integer.parseInt(dateDebut.substring(0, 4)), Integer.parseInt(dateDebut.substring(5, 7)), Integer.parseInt(dateDebut.substring(8)));
 		Date debut = calendrier.getTime();
@@ -21,12 +22,14 @@ public class Admin extends Personne{
 		c.sauvegarder_Projets();
 	}
 	
-	public void supprimer_Projet(Projet p, Compagnie c) {
+	public void supprimer_Projet(Projet p) {
+		Compagnie c = Compagnie.getInstance();
 		c.supprimerProjet(p);
 		c.sauvegarder_Projets();
 	}
 	
-	public void supprimer_Employe(Employe p, Compagnie c) {
+	public void supprimer_Employe(Employe p) {
+		Compagnie c = Compagnie.getInstance();
 		c.enlever_Employe(p);
 		c.sauvegarder_Personnes();
 	}
@@ -34,7 +37,8 @@ public class Admin extends Personne{
 
 	public void ajouter_Employe(String nom, int id_personne, String poste, int taux_horaire_base, int taux_horaire_supp, String date_embauche,
 
-			String date_depart, int numero_nas , Compagnie c) {
+			String date_depart, int numero_nas) {
+		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
 		calendrier.set(Integer.parseInt(date_embauche.substring(0, 4)), Integer.parseInt(date_embauche.substring(5, 7)), Integer.parseInt(date_embauche.substring(8)));
 		Date embauche = calendrier.getTime();
@@ -45,7 +49,8 @@ public class Admin extends Personne{
 		c.sauvegarder_Personnes();
 	}
 	
-	public void assigner_Projet(Employe e, Projet p, Compagnie c) {
+	public void assigner_Projet(Employe e, Projet p) {
+		Compagnie c = Compagnie.getInstance();
 		int i = 0;
 		for (Projet projet : c.getListeProjets()) {
 			if(projet.getListe_Employes().contains(e))
@@ -64,7 +69,8 @@ public class Admin extends Personne{
 		
 	}
 	
-	public void modifier_Npe(Compagnie c, int npe) {
+	public void modifier_Npe(int npe) {
+		Compagnie c = Compagnie.getInstance();
 		c.setNpe(npe);
 		c.sauvegarder_Projets();
 	}

@@ -22,11 +22,18 @@ public class Compagnie {
 	private Admin admin;
 	private ArrayList<Projet> liste_Projets;
 	private int npe;
+	private static Compagnie c;
 	
-	public Compagnie() {
+	private Compagnie() {
 		liste_Employes = new ArrayList<>();
 		liste_Projets = new ArrayList<>();
 		npe = 2;
+	}
+	
+	public static Compagnie getInstance() {
+		if (c == null)
+			c = new Compagnie();
+		return c;
 	}
 	
 	public int getNpe() {
@@ -281,7 +288,7 @@ public class Compagnie {
                // Créer un nouvel objet Employe avec les données extraites
                Date embauche = StringToDate(date_embauche);
                Date depart = StringToDate(date_depart);
-               if(i == jsonArray.length()-1)
+               if(nom.equals("admin"))
             	   setAdmin(new Admin(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas));
                else {
             	   Employe employe = new Employe(nom, id_personne, poste, taux_horaire_base, taux_horaire_supp, embauche, depart, numero_nas);
@@ -336,7 +343,7 @@ public class Compagnie {
 	
 	}
 	
-	public double lire_Heures_Travaillees_Base(String employe, Date dateMinimum) throws IOException {
+	public double lire_Heures_Travaillees_Base(String employe, Date dateMinimum, Date dateMaximum) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
 		double heures = 0;
@@ -350,14 +357,14 @@ public class Compagnie {
            String date_fin = (String) jsonObject.get("date_fin");
            Date debut = StringToDate(date_debut);
            
-          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && jsonObject.get("type").equals("base")) {
+          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && dateMaximum.after(debut) && jsonObject.get("type").equals("base")) {
         	  heures += jsonObject.getDouble("heures");
           }
        }
 	     return heures;
 	}
 	
-	public double lire_Heures_Travaillees_Supp(String employe, Date dateMinimum) throws IOException {
+	public double lire_Heures_Travaillees_Supp(String employe, Date dateMinimum, Date dateMaximum) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
 		double heures = 0;
@@ -371,7 +378,7 @@ public class Compagnie {
            String date_fin = (String) jsonObject.get("date_fin");
            Date debut = StringToDate(date_debut);
            
-          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && jsonObject.get("type").equals("supp")) {
+          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && jsonObject.get("type").equals("supp")&& dateMaximum.after(debut)) {
         	  heures += jsonObject.getDouble("heures");
           }
        }
@@ -559,7 +566,7 @@ public class Compagnie {
 
 	public static void main(String[] args) {
 		boolean deconnecter = true;
-		Compagnie c = new Compagnie();
+		Compagnie c = Compagnie.getInstance();
 
 		try {
 			c.lire_Personnes();
@@ -628,11 +635,11 @@ public class Compagnie {
 			for(int i = 1; i<=projet.getListe_Disciplines().size();i++) {
 				System.out.println(i+". "+projet.getListe_Disciplines().get(i-1).getNom_Discipline());
 			}
-			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1),this);
+			e.connecter_Activite(projet,projet.getListe_Disciplines().get(scan.nextInt()-1));
 			break;
 		case 2:
 			System.out.println("Fin d'activité");
-			e.terminer_Activite(this);
+			e.terminer_Activite();
 			break;
 		case 3:
 			System.out.println("Talon de paye");
@@ -647,7 +654,7 @@ public class Compagnie {
 			}
 			break;
 		case 4:
-			System.out.println("Heure par projet par discipline");
+			System.out.println("Heures de base travaillées");
 			System.out.println("Veuillez indiquer la date de début de la période désirée (AAAA/MM/JJ)");
 			String debut = scan.next();
 			System.out.println("Veuillez indiquer la date de fin de la période désirée (AAAA/MM/JJ)");
@@ -655,8 +662,7 @@ public class Compagnie {
 			e.demander_Nbre_Heure_Travaille(debut,fin);
 			break;
 		case 5:
-			System.out.println("Heures supplémentaires par projet par discipline");
-			System.out.println("Heure par projet par discipline");
+			System.out.println("Heures supplémentaires travaillée");
 			System.out.println("Veuillez indiquer la date de début de la période désirée (AAAA/MM/JJ)");
 			debut = scan.next();
 			System.out.println("Veuillez indiquer la date de fin de la période désirée (AAAA/MM/JJ)");
@@ -710,7 +716,7 @@ public class Compagnie {
 			System.out.println("NPE = "+this.getNpe());
 			System.out.println("Nouveau NPE:");
 			int NPE = scan.nextInt();
-			admin.modifier_Npe(this, NPE);
+			admin.modifier_Npe(NPE);
 			System.out.println("Le nouveau npe est "+ NPE);
 			break;
 		case 2:
@@ -747,7 +753,7 @@ public class Compagnie {
 				System.out.println("Date fin: AAAA/MM/JJ");
 				String dateFin = scan.next();
 				
-				admin.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin,this);
+				admin.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin);
 				System.out.println("Projet créé!");
 			}
 			if(choix2 == 2) {
@@ -759,7 +765,7 @@ public class Compagnie {
 				System.out.println("Voulez-vous vraiment supprimer "+ projet.getNom_Projet() + " ? (y/n)");
 				char rep = scan.next().charAt(0);
 				if(rep == 'y') {
-					admin.supprimer_Projet(projet,this);
+					admin.supprimer_Projet(projet);
 					System.out.println(projet.getNom_Projet() + " supprimé!");
 				}else
 					System.out.println(projet.getNom_Projet() + " non supprimé, retour au menu");
@@ -851,7 +857,7 @@ public class Compagnie {
 				System.out.println(" numero de nas:");
 				int numero_nas = scan.nextInt();
 				
-				admin.ajouter_Employe(nom, id, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas, this);
+				admin.ajouter_Employe(nom, id, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
 				System.out.println("Employer ajouter");
 				
 				
@@ -865,7 +871,7 @@ public class Compagnie {
 				System.out.println("Voulez-vous vraiment supprimer "+ employe.getNom() + " ? (y/n)");
 				char rep = scan.next().charAt(0);
 				if(rep == 'y') {
-					admin.supprimer_Employe(employe,this);
+					admin.supprimer_Employe(employe);
 					System.out.println(employe.getNom() + " supprimé!");
 				}else
 					System.out.println(employe.getNom() + " non supprimé, retour au menu");
@@ -965,7 +971,7 @@ public class Compagnie {
 				System.out.println(i+". "+this.getListe_Employes().get(i-1).getNom());
 			}
 			Employe per = this.getListe_Employes().get(scan.nextInt()-1);
-			admin.assigner_Projet(per,projet,this);
+			admin.assigner_Projet(per,projet);
 			
 			
 			break;

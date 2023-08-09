@@ -1,7 +1,14 @@
 package timelog;
 
 import java.util.Date;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Calendar;
+import java.text.DecimalFormat;
 
 public class Personne {
 
@@ -108,11 +115,61 @@ public class Personne {
 	
 	}
 	public void rapport_Etat_Projet(Projet p) {
-		
+		try {
+			JSONArray rapportTotal = new JSONArray();
+			Compagnie c = Compagnie.getInstance();
+			DecimalFormat df = new DecimalFormat("#.00");
+			double heures_projet = 0;
+				for(Discipline d : p.getListe_Disciplines()) {
+					JSONObject rapport = new JSONObject();
+						double heures;
+						
+							heures = c.lire_Heures_Travaillees(p.getNom_Projet(),d.getNom_Discipline());
+						
+						rapport.put(d.getNom_Discipline()+": heures travaillées",df.format(heures));
+						rapport.put(d.getNom_Discipline()+": pourcentage accompli",df.format(heures/d.getNbre_Heures_budgetes()*100)+"%");
+						heures_projet+=heures;
+					rapportTotal.put(rapport);
+				}
+				JSONObject rapport = new JSONObject();
+			rapport.put(p.getNom_Projet()+": heures travaillées", df.format(heures_projet));
+			rapport.put(p.getNom_Projet()+": pourcentage accompli", df.format(heures_projet/p.getNbre_Heures_Budgetes()*100)+"%");
+			rapportTotal.put(rapport);
+			System.out.println(rapportTotal.toString(4));
+		} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	}
 	
 	public void rapport_Total_Projet() {
-		
+		try {
+			JSONArray rapportTotal = new JSONArray();
+			Compagnie c = Compagnie.getInstance();
+			DecimalFormat df = new DecimalFormat("#.00");
+			double heuresTotal = 0;
+			double heuresBudgetees = 0;
+				for(Projet p : c.getListeProjets()) {
+					JSONObject rapport = new JSONObject();
+						double heures;
+						
+							heures = c.lire_Heures_Travaillees(p.getNom_Projet());
+						
+						rapport.put(p.getNom_Projet()+": heures travaillées",df.format(heures));
+						rapport.put(p.getNom_Projet()+": pourcentage accompli",df.format(heures/p.getNbre_Heures_Budgetes()*100)+"%");
+						heuresTotal+=heures;
+						heuresBudgetees +=p.getNbre_Heures_Budgetes();
+					rapportTotal.put(rapport);
+				}
+				JSONObject rapport = new JSONObject();
+			rapport.put("Total: heures travaillées", df.format(heuresTotal));
+			rapport.put("Total: pourcentage accompli", df.format(heuresTotal/heuresBudgetees*100)+"%");
+			rapportTotal.put(rapport);
+			System.out.println(rapportTotal.toString(4));
+		} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	}
 		
 	public String getPoste() {
