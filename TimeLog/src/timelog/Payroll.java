@@ -8,7 +8,7 @@ import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Payroll {
+public class Payroll implements PayrollInterface{
 	
 	double salaireBrute=0;
 	double salaireNet=0;
@@ -49,16 +49,12 @@ public class Payroll {
 	public void salaire(Employe e,Date debut,Date fin) {
 		Compagnie c = Compagnie.getInstance();
 		try {
-			double salaireBrut=0;
-			double salaireNet=0;
 			PayInfo info = new PayInfo(e.getId_personne(),
 					c.lire_Heures_Travaillees_Base(e.getNom(), debut, fin),
 					c.lire_Heures_Travaillees_Supp(e.getNom(),debut,fin),
 					e.getTaux_horaire_base(),e.getTaux_horaire_supp(),debut,fin);
 			
-			salaireBrut += netFrombrute(info);
-			salaireNet += deduction();
-			printPay(salaireBrut,salaireNet);
+			printPay(info);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}	
@@ -103,18 +99,33 @@ public class Payroll {
 
 	
 	/**
-	 * Imprime le talon de paie
+	 * Imprime le talon de paie pour le total des salaires
 	 * @param brut salaire brut
 	 * @param net salaire net
 	 */
 	public void printPay(double brut, double net){
-		//	System.out.println("DATE DU " +DateMinimum + " AU  " +DateMaximum);
-		DecimalFormat df = new DecimalFormat("#.00");
+			DecimalFormat df = new DecimalFormat("#.00");
 			JSONArray talon = new JSONArray();
 			JSONObject contenu = new JSONObject();
 			contenu.put("Salaire brute", df.format(brut));
 			contenu.put("Salaire net", df.format(net));
 			talon.put(contenu);
 			System.out.println(talon.toString(4));
+	}
+
+
+	/**
+	 * Imprime le talon de paie pour un employé
+	 * @param info information de la paye
+	 */
+	@Override
+	public void printPay(PayInfo info) {
+		DecimalFormat df = new DecimalFormat("#.00");
+		JSONArray talon = new JSONArray();
+		JSONObject contenu = new JSONObject();
+		contenu.put("Salaire brute", df.format(netFrombrute(info)));
+		contenu.put("Salaire net", df.format(deduction()));
+		talon.put(contenu);
+		System.out.println(talon.toString(4));
 	}	
 }

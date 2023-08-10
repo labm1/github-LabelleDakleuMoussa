@@ -439,7 +439,7 @@ public class Compagnie {
 	 * @param dateMinimum la date minimum de l'intervalle de temps
 	 * @param dateMaximum la date maximum de l'intervalle de temps
 	 */
-	public double lire_Heures_Travaillees_Base(String employe,String projet ,Date dateMinimum, Date dateMaximum) throws IOException {
+	public double lire_Heures_Travaillees_Base(String employe,String projet,Date dateMinimum, Date dateMaximum) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
 		double heures = 0;
@@ -453,6 +453,7 @@ public class Compagnie {
            String date_fin = (String) jsonObject.get("date_fin");
            String nomProjet = (String) jsonObject.get("projet");
            Date debut = StringToDate(date_debut);
+           
            
           if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && dateMaximum.after(debut) && jsonObject.get("type").equals("base") && nomProjet.equals(projet)) {
         	  heures += jsonObject.getDouble("heures");
@@ -501,7 +502,7 @@ public class Compagnie {
 	 * @param dateMinimum la date minimum de l'intervalle de temps
 	 * @param dateMaximum la date maximum de l'intervalle de temps
 	 */
-	public double lire_Heures_Travaillees_Supp(String employe,String projet ,Date dateMinimum, Date dateMaximum) throws IOException {
+	public double lire_Heures_Travaillees_Supp(String employe,String projet,Date dateMinimum, Date dateMaximum) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
 		double heures = 0;
@@ -622,16 +623,16 @@ public class Compagnie {
 		    jsonObject1.put("type", "base");
 		    
 		    jsonArray.put(jsonObject1);
+		    JSONObject jsonObject11 = new JSONObject();
+		    jsonObject11.put("projet", projet2.getNom_Projet());
+		    jsonObject11.put("discipline", projet2.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject11.put("employe", employe1.getNom());
+		    jsonObject11.put("date_debut", calendrier.getTime());
+		    jsonObject11.put("date_fin", "initialisation");
+		    jsonObject11.put("heures", 1.1);
+		    jsonObject11.put("type", "base");
 		    
-		    jsonObject1.put("projet", projet2.getNom_Projet());
-		    jsonObject1.put("discipline", projet2.getListe_Disciplines().get(j).getNom_Discipline());
-		    jsonObject1.put("employe", employe1.getNom());
-		    jsonObject1.put("date_debut", calendrier.getTime());
-		    jsonObject1.put("date_fin", "initialisation");
-		    jsonObject1.put("heures", 1.1);
-		    jsonObject1.put("type", "base");
-		    
-		    jsonArray.put(jsonObject1);
+		    jsonArray.put(jsonObject11);
 		    
 		    
 		    JSONObject jsonObject2 = new JSONObject();
@@ -647,15 +648,16 @@ public class Compagnie {
 		    
 		    jsonArray.put(jsonObject2);
 		    
-		    jsonObject2.put("projet", projet3.getNom_Projet());
-		    jsonObject2.put("discipline", projet3.getListe_Disciplines().get(j).getNom_Discipline());
-		    jsonObject2.put("employe", employe2.getNom());
-		    jsonObject2.put("date_debut", calendrier.getTime());
-		    jsonObject2.put("date_fin", "initialisation");
-		    jsonObject2.put("heures", 1.2);
-		    jsonObject2.put("type", "base");
+		    JSONObject jsonObject22 = new JSONObject();
+		    jsonObject22.put("projet", projet3.getNom_Projet());
+		    jsonObject22.put("discipline", projet3.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject22.put("employe", employe2.getNom());
+		    jsonObject22.put("date_debut", calendrier.getTime());
+		    jsonObject22.put("date_fin", "initialisation");
+		    jsonObject22.put("heures", 1.2);
+		    jsonObject22.put("type", "base");
 		    
-		    jsonArray.put(jsonObject2);
+		    jsonArray.put(jsonObject22);
 		    
 		    
 		    JSONObject jsonObject3 = new JSONObject();
@@ -670,16 +672,17 @@ public class Compagnie {
 		    jsonObject3.put("type", "base");
 		    
 		    jsonArray.put(jsonObject3);
+		    JSONObject jsonObject33 = new JSONObject();
 		    
-		    jsonObject3.put("projet", projet1.getNom_Projet());
-		    jsonObject3.put("discipline", projet1.getListe_Disciplines().get(j).getNom_Discipline());
-		    jsonObject3.put("employe", employe3.getNom());
-		    jsonObject3.put("date_debut", calendrier.getTime());
-		    jsonObject3.put("date_fin", "initialisation");
-		    jsonObject3.put("heures", 1.3);
-		    jsonObject3.put("type", "base");
+		    jsonObject33.put("projet", projet1.getNom_Projet());
+		    jsonObject33.put("discipline", projet1.getListe_Disciplines().get(j).getNom_Discipline());
+		    jsonObject33.put("employe", employe3.getNom());
+		    jsonObject33.put("date_debut", calendrier.getTime());
+		    jsonObject33.put("date_fin", "initialisation");
+		    jsonObject33.put("heures", 1.3);
+		    jsonObject33.put("type", "base");
 		    
-		    jsonArray.put(jsonObject3);
+		    jsonArray.put(jsonObject33);
 	    }
     }
     
@@ -802,7 +805,8 @@ public class Compagnie {
 		System.out.println("4. Heures travaillées de base");
 		System.out.println("5. Heures travaillées supplémentaires");
 		System.out.println("6. Rapport de progression");
-		System.out.println("7. Se déconnecter");
+		System.out.println("7. Salaire brut par projet");
+		System.out.println("8. Se déconnecter");
 		int choix = scan.nextInt();
 		
 		switch (choix) {
@@ -892,16 +896,27 @@ public class Compagnie {
 				e.rapport_Total_Projet();
 			}
 			break;
-			
-		//7. Se déconnecter
+		//7. 
 		case 7:
+			System.out.println("salaire à partir d'une certaine date ou non? (y/n)");
+			rep = scan.next().charAt(0);
+			if(rep == 'y') {
+				System.out.println("Veuillez indiquer à partir de quelle date: (AAAA/MM/JJ)");
+				e.rapport(scan.next());
+			}else {
+				System.out.println("Depuis la dernière semaine impaire");
+				e.rapport("non");
+			}
+		
+			break;
+		//8. Se déconnecter
+		case 8:
 			return true;
 		default:
 			break;
 		}
 		return false;
 	}
-	
 	
 	
 	/**

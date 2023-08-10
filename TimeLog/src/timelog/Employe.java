@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Employe extends Personne {
@@ -95,7 +96,7 @@ public class Employe extends Personne {
 	
 	/**
 	 * Affiche le nombre d'heures travaillées de base dans une intervalle de temps
-	 * @param dateDebut borne minimale de l'intervale de temps
+	 * @param dateDebut borne minimale de l'intervale de temps AAAA/MM/JJ
 	 * @param dateFin borne maximale de l'intervale de temps
 	 */
 	public void demander_Nbre_Heure_Travaille(String dateDebut, String dateFin) {
@@ -150,6 +151,53 @@ public class Employe extends Personne {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * Affiche un rapport pour le salaire brut pour chaque projet dont l'employé a travaillé
+	 * @param dateString date format AAAA/MM/JJ
+	 */
+	public void rapport(String dateString) {
+		DecimalFormat df = new DecimalFormat("#.00");
+		Compagnie c = Compagnie.getInstance();
+		Calendar calendrier = Calendar.getInstance();
+		Date fin = calendrier.getTime();
+		Date debut;
+		
+		if(!dateString.equals("non")) {
+	    	calendrier.set(Integer.parseInt(dateString.substring(0, 4)), Integer.parseInt(dateString.substring(5, 7))-1, Integer.parseInt(dateString.substring(8)));
+	    	debut = calendrier.getTime();
+		}else {
+				calendrier.add(Calendar.DATE, -14);
+			int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+			if(semaine % 2 == 0) {
+				calendrier.set(Calendar.WEEK_OF_YEAR, semaine+1);
+			}
+			debut = calendrier.getTime();
+		}
+	    
+	    try {
+		    JSONArray array = new JSONArray();
+		    
+		    for (Projet projet : c.getListeProjets()) {
+		    	JSONObject objet = new JSONObject();
+		        double resultat;
+			
+				resultat = c.lire_Heures_Travaillees_Base(getNom(),projet.getNom_Projet(),debut, fin)*getTaux_horaire_base()+
+				        c.lire_Heures_Travaillees_Supp(getNom(),projet.getNom_Projet(),debut, fin)*getTaux_horaire_supp();
+			
+				if(resultat == 0)
+					continue;
+				
+		        objet.put(projet.getNom_Projet(),df.format(resultat)+"$");
+		        array.put(objet);
+		    }
+	
+		    System.out.println(array.toString(4));
+	} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 }
 

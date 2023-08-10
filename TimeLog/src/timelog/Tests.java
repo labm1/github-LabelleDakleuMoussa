@@ -67,13 +67,19 @@ class Tests {
 	//test 4: avoir un talon de paye; il y en a un à chaque 2 semaines
 	@Test
 	void test4() {
-		
+		//vérifier si la paye correspond à ce qui est prédit
+		Payroll p = new Payroll();
+		p.salaire(employeTest1, d, d);
+		assert(p.salaireBrute == 0 && p.salaireNet == 0);
 	}
 	
 	//test 5: avoir un talon de paye avec le total des salaires
 	@Test
 	void test5() {
-		
+		//vérifier si la paye correspond à ce qui est prédit
+		Payroll p = new Payroll();
+		p.salaireTous(d, d);
+		assert(p.salaireBrute == 0 && p.salaireNet == 0);
 	}
 	
 	//test 6: Modification de données par l'admin
