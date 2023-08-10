@@ -2,6 +2,7 @@ package timelog;
 
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,7 +62,24 @@ class Tests {
 	//test 3: fournir un rapport des valeurs depuis une date
 	@Test
 	void test3() {
-	
+		try {
+			Compagnie c = Compagnie.getInstance();
+			Calendar calendrier = Calendar.getInstance();
+			Date fin = calendrier.getTime();
+			calendrier.add(Calendar.DATE, -14);
+			int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+			if(semaine % 2 == 0) {
+				calendrier.set(Calendar.WEEK_OF_YEAR, semaine+1);
+			}
+			Date debut = calendrier.getTime();
+			
+			//voir si le salaire d'un employé test pour un projet est correct
+			double resultat = c.lire_Heures_Travaillees_Base(employeTest2.getNom(),projetTest2.getNom_Projet(),debut, fin)*employeTest2.getTaux_horaire_base()+
+			        c.lire_Heures_Travaillees_Supp(employeTest2.getNom(),projetTest2.getNom_Projet(),debut, fin)*employeTest2.getTaux_horaire_supp();
+			assert(resultat ==0);
+		} catch (IOException e) {
+			assert(false);
+		}
 	}
 	
 	//test 4: avoir un talon de paye; il y en a un à chaque 2 semaines

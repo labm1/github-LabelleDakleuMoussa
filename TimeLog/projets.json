@@ -1,108 +1,364 @@
 [
     [
         {
-            "date_Fin": "Wed Aug 09 23:18:45 EDT 2023",
-            "nom_Projet": "projet1",
-            "date_Debut": "Wed Aug 09 23:18:45 EDT 2023",
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest1",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
             "id": 1,
-            "nbre_Heures_Budgetes_Projet": 500
+            "nbre_Heures_Budgetes_Projet": 50
         },
         [
-            {"nom_Employe": "employe1"},
-            {"nom_Employe": "employe3"}
+            {"nom_Employe": "employeTest1"},
+            {"nom_Employe": "employeTest2"}
         ],
         [
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Design1"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Design2"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Implémentation"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Test"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Déploiement"
             }
         ]
     ],
     [
         {
-            "date_Fin": "Wed Aug 09 23:18:45 EDT 2023",
-            "nom_Projet": "projet2",
-            "date_Debut": "Wed Aug 09 23:18:45 EDT 2023",
-            "id": 2,
-            "nbre_Heures_Budgetes_Projet": 500
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest2",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
         },
-        [
-            {"nom_Employe": "employe1"},
-            {"nom_Employe": "employe2"}
-        ],
+        [{"nom_Employe": "employeTest2"}],
         [
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Design1"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Design2"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Implémentation"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Test"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 10,
                 "nom_Discipline": "Déploiement"
             }
         ]
     ],
     [
         {
-            "date_Fin": "Wed Aug 09 23:18:45 EDT 2023",
-            "nom_Projet": "projet3",
-            "date_Debut": "Wed Aug 09 23:18:45 EDT 2023",
-            "id": 3,
-            "nbre_Heures_Budgetes_Projet": 500
+            "date_Fin": "Thu Feb 02 23:32:28 EST 2023",
+            "nom_Projet": "test",
+            "date_Debut": "Thu Feb 02 23:32:28 EST 2023",
+            "id": 0,
+            "nbre_Heures_Budgetes_Projet": 10
         },
-        [
-            {"nom_Employe": "employe2"},
-            {"nom_Employe": "employe3"}
-        ],
+        [],
         [
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 0,
                 "nom_Discipline": "Design1"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 0,
                 "nom_Discipline": "Design2"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 0,
                 "nom_Discipline": "Implémentation"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 0,
                 "nom_Discipline": "Test"
             },
             {
-                "nbre_Heures_budgetes_Discipline": 100,
+                "nbre_Heures_budgetes_Discipline": 0,
                 "nom_Discipline": "Déploiement"
             }
         ]
     ],
-    {"npe": 2}
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest1",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [
+            {"nom_Employe": "employeTest1"},
+            {"nom_Employe": "employeTest2"}
+        ],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest2",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest1",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [
+            {"nom_Employe": "employeTest1"},
+            {"nom_Employe": "employeTest2"}
+        ],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest2",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [{"nom_Employe": "employeTest2"}],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Thu Feb 02 23:32:28 EST 2023",
+            "nom_Projet": "test",
+            "date_Debut": "Thu Feb 02 23:32:28 EST 2023",
+            "id": 0,
+            "nbre_Heures_Budgetes_Projet": 0
+        },
+        [],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 0,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 0,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 0,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 0,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 0,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest1",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest1",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [{"nom_Employe": "employeTest1"}],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    [
+        {
+            "date_Fin": "Wed Aug 09 23:32:28 EDT 2023",
+            "nom_Projet": "ProjetTest2",
+            "date_Debut": "Wed Aug 09 23:32:28 EDT 2023",
+            "id": 1,
+            "nbre_Heures_Budgetes_Projet": 50
+        },
+        [{"nom_Employe": "employeTest2"}],
+        [
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design1"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Design2"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Implémentation"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Test"
+            },
+            {
+                "nbre_Heures_budgetes_Discipline": 10,
+                "nom_Discipline": "Déploiement"
+            }
+        ]
+    ],
+    {"npe": 1}
 ]
