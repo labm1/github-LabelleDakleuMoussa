@@ -1,8 +1,12 @@
 package timelog;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Payroll {
 	
@@ -20,12 +24,30 @@ public class Payroll {
 					c.lire_Heures_Travaillees_Base(liste.get(i).getNom(), debut, fin),
 					c.lire_Heures_Travaillees_Supp(liste.get(i).getNom(),debut,fin),
 					liste.get(i).getTaux_horaire_base(),liste.get(i).getTaux_horaire_supp(),debut,fin);
-					salaireBrut += netFrombrute(info);
-					salaireNet += deduction();
+			salaireBrut += netFrombrute(info);
+			salaireNet += deduction();
 		}
 		printPay(salaireBrut,salaireNet);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}	
+	}
+	
+	public void salaire(Employe e,Date debut,Date fin) {
+		Compagnie c = Compagnie.getInstance();
+		try {
+			double salaireBrut=0;
+			double salaireNet=0;
+			PayInfo info = new PayInfo(e.getId_personne(),
+					c.lire_Heures_Travaillees_Base(e.getNom(), debut, fin),
+					c.lire_Heures_Travaillees_Supp(e.getNom(),debut,fin),
+					e.getTaux_horaire_base(),e.getTaux_horaire_supp(),debut,fin);
+			
+			salaireBrut += netFrombrute(info);
+			salaireNet += deduction();
+			printPay(salaireBrut,salaireNet);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}	
 	}
 	
@@ -66,9 +88,13 @@ public class Payroll {
 	
 	public void printPay(double brut, double net){
 		//	System.out.println("DATE DU " +DateMinimum + " AU  " +DateMaximum);
-			System.out.println("Nombre d'heure travaillé de Base :  " );
-			System.out.println("Nombre d'heure travaillé supplementaire : "  );
-			System.out.println("NSalaire Brute : " );
+		DecimalFormat df = new DecimalFormat("#.00");
+			JSONArray talon = new JSONArray();
+			JSONObject contenu = new JSONObject();
+			contenu.put("Salaire brute", df.format(brut));
+			contenu.put("Salaire net", df.format(net));
+			talon.put(contenu);
+			System.out.println(talon.toString(4));
 	}
 		
 		

@@ -32,44 +32,45 @@ public class Employe extends Personne {
 		Calendar calendrier = Calendar.getInstance();
 		calendrier.set(Integer.parseInt(dateString.substring(0, 4)), Integer.parseInt(dateString.substring(5, 7))-1, Integer.parseInt(dateString.substring(8)));
 		
-		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
-		if(semaine % 2 == 0) {
-			calendrier.set(Calendar.WEEK_OF_YEAR, semaine--);
-		}
 		Date fin = calendrier.getTime();
+		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
 		calendrier.add(Calendar.DATE, -14);
-		Date debut = calendrier.getTime();
-		Payroll p = new Payroll();
-		try {
-			PayInfo i = new PayInfo(getId_personne(),c.lire_Heures_Travaillees_Base(getNom(), debut, fin),c.lire_Heures_Travaillees_Supp(getNom(), debut, fin),getTaux_horaire_base(),getTaux_horaire_supp(),debut,fin);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(semaine % 2 == 0) {
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine+1);
+			 fin = calendrier.getTime();
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine-1);
 		}
-		//p.getTalon(i);
+		Date debut = calendrier.getTime();
+		
+		System.out.println("Voici le talon de paye à partir du " + debut + " au "+fin);
+		Payroll p = new Payroll();
+		
+		p.salaire(this, debut, fin);
+		
 		//imprimer à l'écran en json le salaire brut et net total depuis la date
 	}
 	
 	public void demander_Talon() {
 		//imprimer à l'écran en json le salaire brut et net depuis la dernière période de paye
-		Compagnie c = Compagnie.getInstance();
 		Calendar calendrier = Calendar.getInstance();
 		Date fin = calendrier.getTime();
 		
+		
 		calendrier.add(Calendar.DATE, -14);
 		int semaine = calendrier.get(Calendar.WEEK_OF_YEAR);
+		
 		if(semaine % 2 == 0) {
-			calendrier.set(Calendar.WEEK_OF_YEAR, semaine++);
+			calendrier.set(Calendar.WEEK_OF_YEAR, semaine+1);
 		}
+		
 		Date debut = calendrier.getTime();
 		
 		
+		System.out.println("Voici le talon de paye à partir du " + debut + " au "+fin);
 		Payroll p = new Payroll();
-		try {
-			PayInfo i = new PayInfo(getId_personne(),c.lire_Heures_Travaillees_Base(getNom(), debut, fin),c.lire_Heures_Travaillees_Supp(getNom(), debut, fin),getTaux_horaire_base(),getTaux_horaire_supp(),debut,fin);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//p.getTalon(i);
+		
+		p.salaire(this, debut, fin);
+		
 	}
 	
 	public void demander_Nbre_Heure_Travaille(String dateDebut, String dateFin) {

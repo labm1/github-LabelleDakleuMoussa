@@ -275,6 +275,11 @@ public class Compagnie {
 	    }
 	}
 	
+	
+	/**
+	 * Lit les personnes du fichier "personnes.json" et créé les instances des personnes avec les
+	 * objets JSON
+	 */
 	public void lire_Personnes() throws NoSuchFileException, IOException{
             String jsonData = new String(Files.readAllBytes(Paths.get("personnes.json")));
 
@@ -306,6 +311,11 @@ public class Compagnie {
 
 	}
 	
+	
+	/**
+	 * Lit les projets du fichier "projets.json" et créé les instances des projets avec les
+	 * objets JSON
+	 */
 	public void lire_Projets() throws NoSuchFileException, IOException{
 			String jsonData = new String(Files.readAllBytes(Paths.get("projets.json")));
 
@@ -350,6 +360,15 @@ public class Compagnie {
 	
 	}
 	
+	
+	/**
+	 * Lit les heures travaillées de base du fichier "dates.json" 
+	 * d'un employé dans une intervalle de temps
+	 * @return double le nombre d'heures qu'un employé a travaillé sur un projet
+	 * @param employe l'employé dont on veut connaitre le nombre d'heures travaillées sur un projet
+	 * @param dateMinimum la date minimum de l'intervalle de temps
+	 * @param dateMaximum la date maximum de l'intervalle de temps
+	 */
 	public double lire_Heures_Travaillees_Base(String employe, Date dateMinimum, Date dateMaximum) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
@@ -371,6 +390,47 @@ public class Compagnie {
 	     return heures;
 	}
 	
+	
+	/**
+	 * Lit les heures travaillées de base du fichier "dates.json" sur un projet 
+	 * d'un employé dans une intervalle de temps
+	 * @return le nombre d'heures qu'un employé a travaillé sur un projet
+	 * @param projet le projet dont on veut trouver le nombre d'heures travaillées
+	 * @param employe l'employé dont on veut connaitre le nombre d'heures travaillées sur un projet
+	 * @param dateMinimum la date minimum de l'intervalle de temps
+	 * @param dateMaximum la date maximum de l'intervalle de temps
+	 */
+	public double lire_Heures_Travaillees_Base(String employe,String projet ,Date dateMinimum, Date dateMaximum) throws IOException {
+		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+
+		double heures = 0;
+		
+        JSONArray jsonArray = new JSONArray(jsonData.toString());
+	     for (int i = 0; i < jsonArray.length(); i++) {
+	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+           String nom = (String) jsonObject.get("employe");
+           String date_debut = (String) jsonObject.get("date_debut");
+           String date_fin = (String) jsonObject.get("date_fin");
+           String nomProjet = (String) jsonObject.get("projet");
+           Date debut = StringToDate(date_debut);
+           
+          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && dateMaximum.after(debut) && jsonObject.get("type").equals("base") && nomProjet.equals(projet)) {
+        	  heures += jsonObject.getDouble("heures");
+          }
+       }
+	     return heures;
+	}
+	
+	
+	/**
+	 * Lit les heures travaillées supplémentaires du fichier "dates.json" 
+	 * d'un employé dans une intervalle de temps
+	 * @return double le nombre d'heures qu'un employé a travaillé sur un projet
+	 * @param employe l'employé dont on veut connaitre le nombre d'heures travaillées sur un projet
+	 * @param dateMinimum la date minimum de l'intervalle de temps
+	 * @param dateMaximum la date maximum de l'intervalle de temps
+	 */
 	public double lire_Heures_Travaillees_Supp(String employe, Date dateMinimum, Date dateMaximum) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
@@ -392,6 +452,44 @@ public class Compagnie {
 	     return heures;
 	}
 	
+	
+	/**
+	 * Lit les heures travaillées supplémentaires du fichier "dates.json" sur un projet 
+	 * d'un employé dans une intervalle de temps
+	 * @return double le nombre d'heures qu'un employé a travaillé sur un projet
+	 * @param projet le projet dont on veut trouver le nombre d'heures travaillées
+	 * @param employe l'employé dont on veut connaitre le nombre d'heures travaillées sur un projet
+	 * @param dateMinimum la date minimum de l'intervalle de temps
+	 * @param dateMaximum la date maximum de l'intervalle de temps
+	 */
+	public double lire_Heures_Travaillees_Supp(String employe,String projet ,Date dateMinimum, Date dateMaximum) throws IOException {
+		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
+
+		double heures = 0;
+		
+        JSONArray jsonArray = new JSONArray(jsonData.toString());
+	     for (int i = 0; i < jsonArray.length(); i++) {
+	    	 JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+           String nom = (String) jsonObject.get("employe");
+           String date_debut = (String) jsonObject.get("date_debut");
+           String date_fin = (String) jsonObject.get("date_fin");
+           String nomProjet = (String) jsonObject.get("projet");
+           Date debut = StringToDate(date_debut);
+           
+          if(nom.equals(employe) && !date_fin.equals("null") && dateMinimum.before(debut) && dateMaximum.after(debut) && jsonObject.get("type").equals("supp") && nomProjet.equals(projet)) {
+        	  heures += jsonObject.getDouble("heures");
+          }
+       }
+	     return heures;
+	}
+	
+	
+	/**
+	 * Lit les heures travaillées du fichier "dates.json" sur un projet
+	 * @return double le nombre d'heures travaillées sur un projet
+	 * @param projet le projet dont on veut trouver le nombre d'heures trvaillées
+	 */
 	public double lire_Heures_Travaillees(String projet) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
@@ -410,6 +508,13 @@ public class Compagnie {
 	     return heures;
 	}
 	
+	
+	/**
+	 * Lit les heures travaillées du fichier "dates.json" sur une discipline d'un projet
+	 * @return double le nombre d'heures travaillées sur une discipline d'un projet
+	 * @param projet le projet d'une discipline
+	 * @param discipline la discipline dont on veut trouver le nombre d'heures trvaillées
+	 */
 	public double lire_Heures_Travaillees(String projet, String discipline) throws IOException {
 		String jsonData = new String(Files.readAllBytes(Paths.get("dates.json")));
 
@@ -431,7 +536,9 @@ public class Compagnie {
 	}
 	
 	
-	
+	/**
+	 * Initialise avec les données d'initialisation
+	 */
 	public void initialisation() {
 		JSONArray jsonArray = null;
 		try {
@@ -442,10 +549,11 @@ public class Compagnie {
 			jsonArray = new JSONArray();
 		}
 		
+		//création des projets, des employés, et des admins
 		Date d = new Date();
-		Projet projet1 = new Projet("projet1",1,10,10,10,10,10,d,d);
-		Projet projet2 = new Projet("projet2",1,10,10,10,10,10,d,d);
-		Projet projet3 = new Projet("projet3",1,10,10,10,10,10,d,d);
+		Projet projet1 = new Projet("projet1",1,100,100,100,100,100,d,d);
+		Projet projet2 = new Projet("projet2",2,100,100,100,100,100,d,d);
+		Projet projet3 = new Projet("projet3",3,100,100,100,100,100,d,d);
 		
 		
 		Employe employe1 = new Employe("employe1",1,"Développeur sénior",15,17,d,d,123456789);
@@ -455,13 +563,17 @@ public class Compagnie {
 		Admin a = new Admin("admin",10,"admin",15,17,d,d,123456789);
 		
   try (FileWriter fileWriter = new FileWriter("dates.json")) {
-    
-    for(int i = 0; i<14;i++) {
-    	for(int j = 0; j<projet1.getListe_Disciplines().size();j++) {
+	  //ajouter les heures travaillées chaque jour durant les deux dernières semaines;
+	  //employé1 ayant travaillé 1.1 heure pour chaque discipline de deux projet projet1 et projet2; 
+	  //employé2 ayant travaillé 1.2 heures pour chaque discipline de deux projet projet2 et projet3; 
+	  //employé3 ayant travaillé 1.3 heure pour chaque discipline de deux projet projet3 et projet1.
+	  for(int i = 0; i<14;i++) {
+		  for(int j = 0; j<projet1.getListe_Disciplines().size();j++) {
 		    Calendar calendrier = Calendar.getInstance();
 		    calendrier.add(Calendar.DAY_OF_MONTH, -i);
 			JSONObject jsonObject1 = new JSONObject();			
 			
+			//Employé 1
 		    jsonObject1.put("projet", projet1.getNom_Projet());
 		    jsonObject1.put("discipline", projet1.getListe_Disciplines().get(j).getNom_Discipline());
 		    jsonObject1.put("employe", employe1.getNom());
@@ -485,6 +597,7 @@ public class Compagnie {
 		    
 		    JSONObject jsonObject2 = new JSONObject();
 			
+		    //Employé 2
 		    jsonObject2.put("projet", projet2.getNom_Projet());
 		    jsonObject2.put("discipline", projet2.getListe_Disciplines().get(j).getNom_Discipline());
 		    jsonObject2.put("employe", employe2.getNom());
@@ -508,6 +621,7 @@ public class Compagnie {
 		    
 		    JSONObject jsonObject3 = new JSONObject();
 			
+		    //Employé 3
 		    jsonObject3.put("projet", projet3.getNom_Projet());
 		    jsonObject3.put("discipline", projet3.getListe_Disciplines().get(j).getNom_Discipline());
 		    jsonObject3.put("employe", employe3.getNom());
@@ -536,6 +650,7 @@ public class Compagnie {
     } catch (IOException exception) {
         System.err.println("Erreur lors de l'enregistrement ou la lecture des données d'activité : " + exception.getMessage());
     }
+  	//ajouter les personnes et projets à la compagnie
 		setAdmin(a);
 		ajouterProjet(projet1);
 		ajouterProjet(projet2);
@@ -553,6 +668,12 @@ public class Compagnie {
 		sauvegarder_Projets();
 	}
 	
+	
+	/**
+	 * Transforme une String en objet Date
+	 * @return Date un objet date qui correspond au String en paramètre
+	 * @param dateString une date sous forme "EEE MMM dd HH:mm:ss zzz yyyy"
+	 */
 	public Date StringToDate(String dateString) {
 		 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 	        try {
@@ -627,8 +748,9 @@ public class Compagnie {
 	}
 	
 	/**
+	 * Affiche le menu pour les employés
 	 * @return boolean Si l'employé a été déconnecté du menu ou non
-	 * @param Employe L'employé qui a ouvert le menu
+	 * @param e L'employé qui a ouvert le menu
 	 */
 	public boolean menuEmploye(Employe e) {
 		
@@ -744,8 +866,9 @@ public class Compagnie {
 	
 	
 	/**
+	 * Affiche le menu pour l'admin
 	 * @return boolean Si l'admin a été déconnecté du menu ou non
-	 * @param admim L'admin qui a ouvert le menu
+	 * @param admin L'admin qui a ouvert le menu
 	 */
 	public boolean menuAdmin(Admin admin) {
 		System.out.println("\n\nBienvenue " + admin.getNom());
@@ -753,7 +876,7 @@ public class Compagnie {
 		System.out.println("1. Modifier NPE");
 		System.out.println("2. Modifier Projet");
 		System.out.println("3. Modifier employé");
-		System.out.println("4. Modifier ID");
+		System.out.println("4. Modifier mot de passe");
 		System.out.println("5. Assigner employé projet");
 		System.out.println("6. Supprimer employé projet");
 		System.out.println("7. Rapport salaire total");
@@ -764,6 +887,7 @@ public class Compagnie {
 		
 		
 		switch (choix) {
+		//1. Modifier NPE
 		case 1:
 			System.out.println("NPE = "+this.getNpe());
 			System.out.println("Nouveau NPE:");
@@ -771,12 +895,15 @@ public class Compagnie {
 			admin.modifier_Npe(NPE);
 			System.out.println("Le nouveau npe est "+ NPE);
 			break;
+		//2. Modifier Projet
 		case 2:
 			System.out.println("Modifier Projet");
 			System.out.println("1.Ajouter");
 			System.out.println("2.Supprimer");
 			System.out.println("3.Modifier");
 			int choix2 = scan.nextInt();
+			
+			//2.1 Ajouter un nouveau projet
 			if(choix2 == 1) {
 				System.out.println("nom du projet:");
 				String nom = scan.next();
@@ -808,6 +935,8 @@ public class Compagnie {
 				admin.ajouter_Projet(nom, id, design1, design2, implementation, test, deploiement, dateDebut, dateFin);
 				System.out.println("Projet créé!");
 			}
+			
+			//2.2 supprimer un projet
 			if(choix2 == 2) {
 				System.out.println("Choisir le projet: ");
 				for (int i = 1; i<=this.getListeProjets().size();i++) {
@@ -823,6 +952,8 @@ public class Compagnie {
 					System.out.println(projet.getNom_Projet() + " non supprimé, retour au menu");
 				
 			}
+			
+			//2.3 modifier un projet
 			if(choix2 == 3) {
 				System.out.println("Choisir le projet: ");
 				for (int i = 1; i<=this.getListeProjets().size();i++) {
@@ -839,18 +970,23 @@ public class Compagnie {
 				
 				int choix3 = scan.nextInt();
 				
+				//2.3.1. modifier nom
 				if(choix3 == 1) {
 					System.out.println("Nom = "+ projet.getNom_Projet());
 					System.out.println("Nouveau nom:");
 					projet.setNom_Projet(scan.next());
 					System.out.println("Le nouveau nom est "+ projet.getNom_Projet());
 				}
+				
+				//2.3.2. modifier id
 				if(choix3 == 2) {
 					System.out.println("ID = "+ projet.getId());
 					System.out.println("Nouveau ID:");
 					projet.setId(scan.nextInt());
 					System.out.println("Le nouvel id est "+ projet.getId());
 				}
+				
+				//2.3.3. modifier heures budgétés
 				if(choix3 == 3) {
 					System.out.println("Changer les heures budgétées des disciplines:");
 					for(int i = 1; i <= projet.getListe_Disciplines().size();i++) {
@@ -862,6 +998,8 @@ public class Compagnie {
 					d.setNbre_Heures_budgetes(scan.nextDouble());
 					System.out.println("Le nouveau nombre d'heure budgété de la discipline "+d.getNom_Discipline()+" est de "+d.getNbre_Heures_budgetes()+"h");
 				}
+				
+				//2.3.4. modifier date de début
 				if(choix3 == 4) {
 					System.out.println("Date de début = "+ projet.getDate_Debut().toString());
 					System.out.println("Nouvelle date de début: AAAA/MM/JJ");
@@ -869,6 +1007,8 @@ public class Compagnie {
 					projet.setDate_Debut(dateDebut);
 					System.out.println("Le nouvelle date de début est "+ projet.getDate_Debut().toString());
 				}
+				
+				//2.3.5. modifier date de fin
 				if(choix3 == 5) {
 					System.out.println("Date de Fin = "+ projet.getDate_Fin().toString());
 					System.out.println("Nouvelle date de fin: AAAA/MM/JJ");
@@ -878,12 +1018,15 @@ public class Compagnie {
 				}
 			}
 			break;
+			
+		//3. Modifier employé
 		case 3:
 			System.out.println("Modifier Employé");
 			System.out.println("1.Ajouter");
 			System.out.println("2.Supprimer");
 			System.out.println("3.Modifier");
 			int choix3 = scan.nextInt();
+			//3.1 ajouter un nouvel employé
 			if(choix3 == 1) {
 				System.out.println("demander nom");
 				String nom = scan.next();
@@ -911,9 +1054,9 @@ public class Compagnie {
 				
 				admin.ajouter_Employe(nom, id, poste, taux_horaire_base, taux_horaire_supp, date_embauche, date_depart, numero_nas);
 				System.out.println("Employer ajouter");
-				
-				
 			}
+			
+			//3.2 supprimer employé
 			if(choix3 == 2) {
 				System.out.println("Choisir le employer: ");
 				for (int i = 1; i<=this.getListe_Employes().size();i++) {
@@ -929,80 +1072,87 @@ public class Compagnie {
 					System.out.println(employe.getNom() + " non supprimé, retour au menu");
 			}
 			
+			//3.3 modifier employé
+			if(choix3== 3) {
+				System.out.println("Choisir l'employe: ");
+				for (int i = 1; i<=this.getListe_Employes().size();i++) {
+					System.out.println(i+". "+this.getListe_Employes().get(i-1).getNom());
+				}
+				Employe employe = this.getListe_Employes().get(scan.nextInt()-1);
 				
-				if(choix3== 3) {
-					System.out.println("Choisir l'employe: ");
-					for (int i = 1; i<=this.getListe_Employes().size();i++) {
-						System.out.println(i+". "+this.getListe_Employes().get(i-1).getNom());
-					}
-					Employe employe = this.getListe_Employes().get(scan.nextInt()-1);
-					
-					System.out.println("Modifier employe " + employe.getNom());
-					System.out.println("1.nom");
-				    System.out.println("2.id");
-				    System.out.println("3.taux_horaire_base");
-				    System.out.println("4.taux_horaire_supp");
-				   
-				    System.out.println("5.date_embauche");
-				    System.out.println("6.date_depart");
-				    System.out.println("7.numero NAS");
-				    
-				    int choix4 = scan.nextInt();
-				    if(choix4 == 1) {
-						System.out.println("Nom = "+ employe.getNom());
-						System.out.println("Nouveau nom:");
-						employe.setNom(scan.next());
-						System.out.println("Le nouveau nom est "+ employe.getNom());
-				    }
-				    
-				    if(choix4 == 2) {
-						System.out.println("ID = "+ employe.getId_personne());
-						System.out.println("Nouveau ID:");
-						employe.setId_personne(scan.nextInt());
-						System.out.println("Le nouvel id est "+ employe.getId_personne());
-			}
-				    if(choix4 == 3) {
-						System.out.println("taux_horaire_base = "+ employe.getTaux_horaire_base());
-						System.out.println("Nouveau taux_horaire_base:");
-						employe.setTaux_horaire_base(scan.nextInt());
-						System.out.println("Le nouvel taux_horaire_base est de "+ employe.getTaux_horaire_base());
-			}
-				    if(choix4 == 4) {
-						System.out.println("taux_horaire_supp = "+ employe.getTaux_horaire_supp());
-						System.out.println("Nouveau taux_horaire_supp:");
-						employe.setTaux_horaire_supp(scan.nextInt());
-						System.out.println("Le nouvel taux_horaire_supp est de "+ employe.getTaux_horaire_supp());
-			} 
-				    
-				    
-				    if(choix4 == 5) {
-						System.out.println("Date d'embauche ="  + employe.getDate_embauche());
-						System.out.println("Nouvelle date d'embauche: AAAA/MM/JJ");
-						String date_embauche=scan.next() ;
-						employe.setDate_embauche(date_embauche);
-						System.out.println("Le nouvelle date de début est "+ employe.getDate_embauche());
-				    
-				    
+				System.out.println("Modifier employe " + employe.getNom());
+				System.out.println("1.nom");
+			    System.out.println("2.id");
+			    System.out.println("3.taux_horaire_base");
+			    System.out.println("4.taux_horaire_supp");
+			   
+			    System.out.println("5.date_embauche");
+			    System.out.println("6.date_depart");
+			    System.out.println("7.numero NAS");
+			    
+			    int choix4 = scan.nextInt();
+			    
+			    //3.3.1 modifier nom
+			    if(choix4 == 1) {
+					System.out.println("Nom = "+ employe.getNom());
+					System.out.println("Nouveau nom:");
+					employe.setNom(scan.next());
+					System.out.println("Le nouveau nom est "+ employe.getNom());
+			    }
+			    
+			    //3.3.2 modifier id
+			    if(choix4 == 2) {
+					System.out.println("ID = "+ employe.getId_personne());
+					System.out.println("Nouveau ID:");
+					employe.setId_personne(scan.nextInt());
+					System.out.println("Le nouvel id est "+ employe.getId_personne());
+			    }
+			    
+			    //3.3.3 modifier taux horaire de base
+			    if(choix4 == 3) {
+					System.out.println("taux_horaire_base = "+ employe.getTaux_horaire_base());
+					System.out.println("Nouveau taux_horaire_base:");
+					employe.setTaux_horaire_base(scan.nextInt());
+					System.out.println("Le nouvel taux_horaire_base est de "+ employe.getTaux_horaire_base());
+			    }
+			    
+			    //3.3.4 modifier taux horaire supplémentaire
+			    if(choix4 == 4) {
+					System.out.println("taux_horaire_supp = "+ employe.getTaux_horaire_supp());
+					System.out.println("Nouveau taux_horaire_supp:");
+					employe.setTaux_horaire_supp(scan.nextInt());
+					System.out.println("Le nouvel taux_horaire_supp est de "+ employe.getTaux_horaire_supp());
+			    } 
+			    
+			    //3.3.5 modifier date d'embauche
+			    if(choix4 == 5) {
+					System.out.println("Date d'embauche ="  + employe.getDate_embauche());
+					System.out.println("Nouvelle date d'embauche: AAAA/MM/JJ");
+					String date_embauche=scan.next() ;
+					employe.setDate_embauche(date_embauche);
+					System.out.println("Le nouvelle date de début est "+ employe.getDate_embauche());
+			    }
+			    
+			    //3.3.6 modifier date de départ
+			    if(choix4 == 6) {
+					System.out.println("Date de depart ="  + employe.getDate_depart());
+					System.out.println("Nouvelle date d'embauche: AAAA/MM/JJ");
+					String date_depart =scan.next() ;
+					employe.setDate_depart(date_depart);
+					System.out.println("Le nouvelle date de début est "+ employe.getDate_depart());
 				}
-				    
-				    if(choix4 == 6) {
-						System.out.println("Date de depart ="  + employe.getDate_depart());
-						System.out.println("Nouvelle date d'embauche: AAAA/MM/JJ");
-						String date_depart =scan.next() ;
-						employe.setDate_depart(date_depart);
-						System.out.println("Le nouvelle date de début est "+ employe.getDate_depart());
-						
-					}
-				    
-				    if(choix4 == 7) {    
-				    	System.out.println("NUMERO NAS = "+ employe.getNumero_nas());
-						System.out.println("Nouveau NAS:");
-						employe.setNumero_nas(scan.nextInt());
-						System.out.println("Le nouveau NAS est "+ employe.getNumero_nas());
+			    
+			    //3.3.7 modifier nas
+			    if(choix4 == 7) {    
+			    	System.out.println("NUMERO NAS = "+ employe.getNumero_nas());
+					System.out.println("Nouveau NAS:");
+					employe.setNumero_nas(scan.nextInt());
+					System.out.println("Le nouveau NAS est "+ employe.getNumero_nas());
+			    }
 			}
-				    	
-				}
 			break;
+			
+		//4. Modifier mot de passe
 		case 4:
 			System.out.println("ID = "+admin.getId_personne());
 			System.out.println("Nouveau ID:");
@@ -1010,6 +1160,8 @@ public class Compagnie {
 			admin.setId_personne(id);
 			System.out.println("Le nouvel ID est "+id);
 			break;
+		
+		//5. Assigner employé projet
 		case 5:
 			System.out.println("Choisir le projet: ");
 			for (int i = 1; i<=this.getListeProjets().size();i++) {
@@ -1024,9 +1176,9 @@ public class Compagnie {
 			}
 			Employe per = this.getListe_Employes().get(scan.nextInt()-1);
 			admin.assigner_Projet(per,projet);
-			
-			
 			break;
+			
+		//6. Supprimer employé projet
 		case 6:
 			System.out.println("Choisir le projet: ");
 			for (int i = 1; i<=this.getListeProjets().size();i++) {
@@ -1043,9 +1195,22 @@ public class Compagnie {
 			projet.supprimer_Employe(e);
 			System.out.println("Employé "+ e.getNom() + " a été supprimé du projet "+ projet.getNom_Projet());
 			break;
+			
+		//7. Rapport salaire total
 		case 7:
-			admin.rapport_Salaire();
+			System.out.println("Talon de paye");
+			System.out.println("Talon à partir d'une certaine date ou non? (y/n)");
+			char rep = scan.next().charAt(0);
+			if(rep == 'y') {
+				System.out.println("Veuillez indiquer à partir de quelle date: (AAAA/MM/JJ)");
+				admin.rapport_Salaire(scan.next());
+			}else {
+				System.out.println("Depuis la dernière période de paye");
+				admin.rapport_Salaire();
+			}
 			break;
+			
+		//8. Rapport de progression
 		case 8:
 			System.out.println("Rapport de progression");
 			System.out.println("Indiquez quel type de rapport vous voulez:");
@@ -1061,6 +1226,8 @@ public class Compagnie {
 				admin.rapport_Total_Projet();
 			}
 			break;
+			
+		//9. Se déconnecter
 		case 9:
 			return true;
 		default:
