@@ -176,7 +176,7 @@ public class Employe extends Personne {
 			}
 			debut = calendrier.getTime();
 		}
-	    
+	    System.out.println("Salaire brute depuis le "+debut);
 	    try {
 		    JSONArray array = new JSONArray();
 		    

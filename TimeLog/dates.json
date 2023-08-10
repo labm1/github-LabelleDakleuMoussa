@@ -3782,9 +3782,18 @@
     {
         "projet": "ProjetTest1",
         "employe": "employeTest1",
-        "heures": 3.888888888888889E-5,
+        "heures": 0.00003888888888888889,
         "date_debut": "Wed Aug 09 23:32:28 EDT 2023",
         "date_fin": "Wed Aug 09 23:32:28 EDT 2023",
+        "discipline": "Design1",
+        "type": "supp"
+    },
+    {
+        "projet": "ProjetTest1",
+        "employe": "employeTest1",
+        "heures": 1.9694444444444444E-4,
+        "date_debut": "Wed Aug 09 23:36:42 EDT 2023",
+        "date_fin": "Wed Aug 09 23:36:42 EDT 2023",
         "discipline": "Design1",
         "type": "supp"
     }
