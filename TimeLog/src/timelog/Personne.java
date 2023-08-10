@@ -12,22 +12,17 @@ import java.text.DecimalFormat;
 public class Personne {
 
 	private String nom;
-	
 	private int id_personne;
-	
 	private String poste;
-	
 	private double taux_horaire_base;
-	
 	private double taux_horaire_supp;
-	
 	private Date date_embauche;
-	
 	private Date date_depart;
-	
 	private int numero_nas;
 	
-	
+	/**
+	 * Constructeur
+	 */
 	public Personne(String nom, int id_personne, String poste, double taux_horaire_base, double taux_horaire_supp, Date date_embauche,
 			Date date_depart, int numero_nas) {
 		this.nom = nom;
@@ -39,9 +34,6 @@ public class Personne {
 		this.numero_nas = numero_nas;
 		this.poste = poste;
 	}
-	
-	
-	
 	
 	public String getNom() {
 		return nom;
@@ -79,18 +71,24 @@ public class Personne {
 		return date_embauche;
 	}
 	
+	/**
+	 * remplace la date d'embauche avec une string transformé en date
+	 * @param date une String représentant une date sous format AAAA/MM/JJ
+	 */
 	public void setDate_embauche(String date) {
 		Calendar calendrier = Calendar.getInstance();
 			calendrier.set(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7))-1, Integer.parseInt(date.substring(8)));
 			this.date_embauche =  calendrier.getTime();
 		}
 	
-	
-	
 	public Date getDate_depart() {
 		return date_depart;
 	}
 	
+	/**
+	 * remplace la date de départ avec une string transformé en date
+	 * @param date une String représentant une date sous format AAAA/MM/JJ
+	 */
 	public void setDate_depart(String date) {
 		Calendar calendrier = Calendar.getInstance();
 		calendrier.set(Integer.parseInt(date.substring(0, 4)), Integer.parseInt(date.substring(5, 7))-1, Integer.parseInt(date.substring(8)));
@@ -105,14 +103,21 @@ public class Personne {
 		this.numero_nas = numero_nas;
 	}
 	
-	
+	/**
+	 * Permet de vérifier si le id correspond à la personne
+	 * @param id identification
+	 * @return vrai si le id est celui de la personne, faux sinon
+	 */
 	public boolean seconnecter(int id) {
-		
-	if (id==this.id_personne  )
-		return true;
-	else return false;
-	
+		if (id==this.id_personne  )
+			return true;
+		else return false;
 	}
+	
+	/**
+	 * Produit un rapport de progression sur un projet et l'imprime à l'écran
+	 * @param p un projet
+	 */
 	public void rapport_Etat_Projet(Projet p) {
 		try {
 			JSONArray rapportTotal = new JSONArray();
@@ -144,6 +149,9 @@ public class Personne {
 		}
 	}
 	
+	/**
+	 * Produit un rapport de progression sur tous les projets et l'imprime à l'écran
+	 */
 	public void rapport_Total_Projet() {
 		try {
 			JSONArray rapportTotal = new JSONArray();

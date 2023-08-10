@@ -13,6 +13,12 @@ public class Payroll {
 	double salaireBrute=0;
 	double salaireNet=0;
 	
+	/**
+	 * Permet d'afficher un rapport du salaire total de tous les employés dans une
+	 * intervalle de temps
+	 * @param debut date minimale de l'intervalle
+	 * @param fin date maximale de l'intervalle
+	 */
 	public void salaireTous(Date debut, Date fin) {
 		Compagnie c = Compagnie.getInstance();
 		try {
@@ -33,6 +39,13 @@ public class Payroll {
 		}	
 	}
 	
+	
+	/**
+	 * Permet d'afficher un rapport du salaire d'un employé sur une intervalle de temps
+	 * @param debut date minimale de l'intervalle
+	 * @param fin date maximale de l'intervalle
+	 * @param e employé
+	 */
 	public void salaire(Employe e,Date debut,Date fin) {
 		Compagnie c = Compagnie.getInstance();
 		try {
@@ -51,6 +64,11 @@ public class Payroll {
 		}	
 	}
 	
+	/**
+	 * Calcule le salaire brute
+	 * @param info toutes les infos nécéssaires pour effectuer le calcul
+	 * @return le salaire brut
+	 */
 	public double netFrombrute(PayInfo info) {
 		salaireBrute = (info.getNbre_heure_base() * info.getTaux_Horaire_Base()+info.getNbre_heure_supp()*info.getTaux_Horaire_Supp());
 		return salaireBrute;
@@ -58,14 +76,14 @@ public class Payroll {
 	
 
 
-	
+	/**
+	 * Calcule les déductions et le salaire net
+	 * @return le salaire net
+	 */
 	public double deduction() {
-		
-		
 		double pensionPlanRate = 0.0505; // Taux du régime de rentes du Québec (RRQ)
 		double federalTaxRate = 0.15; // Taux d'impôt fédéral
 		double provincialTaxRate = 0.15; // Taux d'impôt provincial (Québec)
-		
 
 		
 		// Calcul des déductions d'impôts
@@ -75,17 +93,20 @@ public class Payroll {
 
         // Calcul total des déductions
         double totalDeductions =  + federalTaxDeduction +provincialTaxDeduction +pensionRetraite;
-
         
 	
         // Le salaire Net
 		salaireNet = (salaireBrute - totalDeductions);
 		return salaireNet;
-}
+	}
 	
 
 	
-	
+	/**
+	 * Imprime le talon de paie
+	 * @param brut salaire brut
+	 * @param net salaire net
+	 */
 	public void printPay(double brut, double net){
 		//	System.out.println("DATE DU " +DateMinimum + " AU  " +DateMaximum);
 		DecimalFormat df = new DecimalFormat("#.00");
@@ -95,7 +116,5 @@ public class Payroll {
 			contenu.put("Salaire net", df.format(net));
 			talon.put(contenu);
 			System.out.println(talon.toString(4));
-	}
-		
-		
+	}	
 }

@@ -4,6 +4,9 @@ public class Discipline {
 	private String nom_Discipline;
 	private double nbre_Heures_budgetes;
 	
+	/**
+	 * constructeur
+	 */
 	public Discipline(String nom, double heures) {
 		this.nom_Discipline = nom;
 		this.nbre_Heures_budgetes = heures;

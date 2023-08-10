@@ -13,6 +13,9 @@ public class Projet {
 	private ArrayList<Employe> liste_Employes;
 	private ArrayList<Discipline> liste_Disciplines;
 	
+	/**
+	 * Construsteur sans disciplines de créé
+	 */
 	public Projet(String nom,int id,double heuresDesign1, double heuresDesign2, 
 			double heuresImplementation, double heuresTest, double heuresDeploiement, Date debut, Date fin) {
 		
@@ -33,6 +36,9 @@ public class Projet {
 		this.liste_Disciplines.add(new Discipline("Déploiement", heuresDeploiement));
 	}
 	
+	/**
+	 * Construsteur avec liste de disciplines et employés
+	 */
 	public Projet(String nom,int id,ArrayList<Employe> liste_Employes,ArrayList<Discipline> liste_Discipline,double nbre_Heures_Budgetes,Date debut, Date fin) {
 		
 		this.nbre_Heures_Budgetes = nbre_Heures_Budgetes;

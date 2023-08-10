@@ -86,6 +86,12 @@ public class Compagnie {
 		liste_Projets.remove(p);
 	}
 	
+	
+	/**
+	 * Trouve un objet Personne à partir de son nom
+	 * @param nom nom du projet à trouver
+	 * @return un objet Personne qui correspond au nom
+	 */
 	public Personne trouverPersonne(String nom) {
 		if(nom.equals("admin"))
 			return this.admin;
@@ -96,6 +102,12 @@ public class Compagnie {
 		return null;
 	}
 	
+	
+	/**
+	 * Trouve un objet Projet à partir de son nom
+	 * @param nom nom du projet à trouver
+	 * @return un objet Projet qui correspond au nom
+	 */
 	public Projet trouverProjet(String nom) {
 		for (Projet p : liste_Projets) {
 			if(p.getNom_Projet().equals(nom))
@@ -104,10 +116,20 @@ public class Compagnie {
 		return null;
 	}
 	
+	/**
+	 * Trouve le temps en heure écoulé entre deux dates
+	 * @param debut date de début
+	 * @param fin date de fin
+	 * @return le nombre d'heures entre deux objets Date
+	 */
 	public double trouverTempsEnHeures(Date debut, Date fin) {
 		return (double)(fin.getTime()-debut.getTime())/(1000.0*3600);
 	}
 	
+	
+	/**
+	 * sauvegarde l'ensemble de la liste des projets dans Compagnie dans "projets.json" 
+	 */
 	public void sauvegarder_Personnes() {
 		JSONArray dataPersonnes = new JSONArray();
 		
@@ -143,6 +165,9 @@ public class Compagnie {
 	        }
 	}
 	
+	/**
+	 * sauvegarde l'ensemble de la liste des projets dans Compagnie dans "projets.json" 
+	 */
 	public void sauvegarder_Projets() {
 		JSONArray dataProjets = new JSONArray();
 		for(Projet p : this.liste_Projets) {
@@ -188,6 +213,14 @@ public class Compagnie {
 	        }
 	}
 	
+	
+	/**
+	 * sauvegarde la date de début, le projet, la discipline et l'employé de l'activité dans "dates.json" 
+	 * @param date date de début d'activité
+	 * @param e employé qui commence l'activité
+	 * @param d dicipline dans laquelle l'activité est commencée
+	 * @param p projet dans lequel l'activité est commencée
+	 */
 	public void sauvegarder_date_debut(Date date, Projet p, Discipline d, Employe e) {
 	    //1. lire le fichier json et trouver les activités de l'employé
 	 	//2. vérifier s'il a terminé toute ses activités
@@ -241,6 +274,12 @@ public class Compagnie {
 	    }
 	}
 	
+	
+	/**
+	 * sauvegarde la date de fin d'activité dans "dates.json" 
+	 * @param date date de fin d'activité
+	 * @param e employé qui termine l'activité
+	 */
 	public void sauvegarder_date_fin(Date date,Employe e) {
 	    //1. lire le fichier json et trouver les activités de l'employé
 	 	//2. vérifier l'activité qu'il a commencer et la terminer

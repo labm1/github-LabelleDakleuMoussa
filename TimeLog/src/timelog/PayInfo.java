@@ -18,6 +18,9 @@ public class PayInfo implements PayrollInterface {
     public Date date_debut;
     public Date date_fin;
 
+    /**
+     * Constructeur
+     */
     public PayInfo(int id_Employe, double nbre_heure_base, double nbre_heure_supp, double taux_Horaire_Base,
 			double taux_Horaire_Supp, Date date_debut, Date date_fin) {
 		super();
