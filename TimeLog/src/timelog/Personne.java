@@ -181,6 +181,7 @@ public class Personne {
 			rapport.put("Total: heures travaillées", df.format(heuresTotal));
 			rapport.put("Total: pourcentage accompli", df.format(heuresTotal/heuresBudgetees*100)+"%");
 			rapportSousTotal.put(rapport);
+			rapportTotal.put(rapportSousTotal);
 			System.out.println(rapportTotal.toString(4));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -193,6 +194,8 @@ public class Personne {
 
 	public void setPoste(String poste) {
 		this.poste = poste;
+		Compagnie c = Compagnie.getInstance();
+		c.sauvegarder_Personnes();
 	}
 }
 	

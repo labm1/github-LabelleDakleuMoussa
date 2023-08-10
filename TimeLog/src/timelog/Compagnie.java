@@ -600,7 +600,7 @@ public class Compagnie {
 		Employe employe2 = new Employe("employe2",2,"Développeur junior",15,17,d,d,123456789);
 		Employe employe3 = new Employe("employe3",3,"Développeur junior",15,17,d,d,123456789);
 			
-		Admin a = new Admin("admin",10,"admin",15,17,d,d,123456789);
+		Admin a = new Admin("admin",0,"admin",15,17,d,d,123456789);
 		
   try (FileWriter fileWriter = new FileWriter("dates.json")) {
 	  //ajouter les heures travaillées chaque jour durant les deux dernières semaines;
@@ -948,6 +948,7 @@ public class Compagnie {
 			int NPE = scan.nextInt();
 			admin.modifier_Npe(NPE);
 			System.out.println("Le nouveau npe est "+ NPE);
+			c.sauvegarder_Projets();
 			break;
 		//2. Modifier Projet
 		case 2:
@@ -1071,6 +1072,7 @@ public class Compagnie {
 					System.out.println("Le nouvelle date de fin est "+ projet.getDate_Fin().toString());
 				}
 			}
+			c.sauvegarder_Projets();
 			break;
 			
 		//3. Modifier employé
@@ -1204,6 +1206,7 @@ public class Compagnie {
 					System.out.println("Le nouveau NAS est "+ employe.getNumero_nas());
 			    }
 			}
+			c.sauvegarder_Personnes();
 			break;
 			
 		//4. Modifier mot de passe
@@ -1213,6 +1216,7 @@ public class Compagnie {
 			int id = scan.nextInt();
 			admin.setId_personne(id);
 			System.out.println("Le nouvel ID est "+id);
+			c.sauvegarder_Personnes();
 			break;
 		
 		//5. Assigner employé projet
@@ -1230,6 +1234,7 @@ public class Compagnie {
 			}
 			Employe per = this.getListe_Employes().get(scan.nextInt()-1);
 			admin.assigner_Projet(per,projet);
+			c.sauvegarder_Projets();
 			break;
 			
 		//6. Supprimer employé projet
@@ -1248,6 +1253,7 @@ public class Compagnie {
 			Employe e = this.getListe_Employes().get(scan.nextInt()-1);
 			projet.supprimer_Employe(e);
 			System.out.println("Employé "+ e.getNom() + " a été supprimé du projet "+ projet.getNom_Projet());
+			c.sauvegarder_Projets();
 			break;
 			
 		//7. Rapport salaire total
@@ -1283,6 +1289,8 @@ public class Compagnie {
 			
 		//9. Se déconnecter
 		case 9:
+			c.sauvegarder_Personnes();
+			c.sauvegarder_Projets();
 			return true;
 		default:
 			break;

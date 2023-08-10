@@ -31,7 +31,7 @@ public class Payroll implements PayrollInterface{
 					c.lire_Heures_Travaillees_Supp(liste.get(i).getNom(),debut,fin),
 					liste.get(i).getTaux_horaire_base(),liste.get(i).getTaux_horaire_supp(),debut,fin);
 			salaireBrut += netFrombrute(info);
-			salaireNet += deduction();
+			salaireNet += deductionReport();
 		}
 		printPay(salaireBrut,salaireNet);
 		} catch (IOException e) {
@@ -76,7 +76,7 @@ public class Payroll implements PayrollInterface{
 	 * Calcule les déductions et le salaire net
 	 * @return le salaire net
 	 */
-	public double deduction() {
+	public double deductionReport() {
 		double pensionPlanRate = 0.0505; // Taux du régime de rentes du Québec (RRQ)
 		double federalTaxRate = 0.15; // Taux d'impôt fédéral
 		double provincialTaxRate = 0.15; // Taux d'impôt provincial (Québec)
@@ -124,7 +124,7 @@ public class Payroll implements PayrollInterface{
 		JSONArray talon = new JSONArray();
 		JSONObject contenu = new JSONObject();
 		contenu.put("Salaire brute", df.format(netFrombrute(info)));
-		contenu.put("Salaire net", df.format(deduction()));
+		contenu.put("Salaire net", df.format(deductionReport()));
 		talon.put(contenu);
 		System.out.println(talon.toString(4));
 	}	

@@ -1,14 +1,12 @@
 package timelog;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Georges
  *
  */
-public class PayInfo implements PayrollInterface {
+public class PayInfo {
 
     protected int id_Employe;
     public double nbre_heure_base;

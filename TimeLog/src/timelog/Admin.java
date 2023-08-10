@@ -34,7 +34,6 @@ public class Admin extends Personne{
 		calendrier.set(Integer.parseInt(dateFin.substring(0, 4)), Integer.parseInt(dateFin.substring(5, 7))-1, Integer.parseInt(dateFin.substring(8)));
 		Date fin = calendrier.getTime();
 		c.ajouterProjet(new Projet(nom, id, heuresDesign1, heuresDesign2, heuresImplementation, heuresTest, heuresDeploiement, debut, fin));
-		c.sauvegarder_Projets();
 	}
 	
 	
@@ -45,7 +44,6 @@ public class Admin extends Personne{
 	public void supprimer_Projet(Projet p) {
 		Compagnie c = Compagnie.getInstance();
 		c.supprimerProjet(p);
-		c.sauvegarder_Projets();
 	}
 	
 	/**
@@ -55,7 +53,6 @@ public class Admin extends Personne{
 	public void supprimer_Employe(Employe e) {
 		Compagnie c = Compagnie.getInstance();
 		c.enlever_Employe(e);
-		c.sauvegarder_Personnes();
 	}
 	
 
@@ -81,7 +78,6 @@ public class Admin extends Personne{
 		calendrier.set(Integer.parseInt(date_depart.substring(0, 4)), Integer.parseInt(date_depart.substring(5, 7))-1, Integer.parseInt(date_depart.substring(8)));
 		Date depart = calendrier.getTime();
 		c.ajouter_Employe(new Employe (nom, id_personne,poste, taux_horaire_base, taux_horaire_supp, embauche, depart ,numero_nas ));
-		c.sauvegarder_Personnes();
 	}
 	
 	
@@ -103,7 +99,6 @@ public class Admin extends Personne{
 		}
 		p.ajouter_Employe(e);
 		System.out.println("Employé "+ e.getNom() + " a été ajouté au projet "+ p.getNom_Projet());
-		c.sauvegarder_Projets();
 	}
 	
 	
@@ -161,6 +156,5 @@ public class Admin extends Personne{
 	public void modifier_Npe(int npe) {
 		Compagnie c = Compagnie.getInstance();
 		c.setNpe(npe);
-		c.sauvegarder_Projets();
 	}
 }
